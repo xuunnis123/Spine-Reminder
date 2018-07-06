@@ -62,9 +62,9 @@
 
 				<div id="navbar" class="navbar-collapse navbar-right collapse">
 					<ul class="nav navbar-nav navbar-right cross-effect" id="cross-effect">
-						<li><a id="index">首頁</a></li>
+						<li><a id="index" href="index.html">首頁</a></li>
 						<li>久坐提醒設定</li>
-						<li><a id="sitError">錯誤坐姿一覽</a></li>
+						<li><a id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
 						<li><a class="cross-effect scroll" href="#projects">一週行事曆</a></li>
 					</ul>
 				</div><!-- //Navbar-Collapse -->
@@ -121,7 +121,7 @@
 	
 	<!-- Function -->
 	<script>
-		var n = getValue("n");
+		var time = localStorage.getItem('time');
 		var timer=null;
 		var url;
 		
@@ -133,21 +133,13 @@
 			// setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
 			timer=setInterval(function () 
 			{
-				n++;
-				
+				time++;
+				localStorage.setItem('time',time);
 			},1000);
 			
 			
 		}
-		
-		$("#sitError").click(function(){
-			window.location.href="sitError.html?n="+n;
-			});
-		$("#index").click(function(){
-			window.location.href="index.html?n="+n;
-			});
-			
-		
+					
 		//取得網址上的參數
 		function getValue(value)
 		{
