@@ -351,10 +351,10 @@
 					}
 				}
 				
-				if(toDoEvent!=null)
-					nextEvent.innerHTML=toDoEvent;
-				else
+				if(toDoEvent=null)
 					nextEvent.innerHTML="今日沒有代辦事項";
+				else
+					nextEvent.innerHTML=toDoEvent;
 			},1000);
 			
 			
