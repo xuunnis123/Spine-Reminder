@@ -65,7 +65,7 @@
 						<li><a id="index" href="index.html">首頁</a></li>
 						<li><a id="setTime" href="setTime.html">久坐提醒設定</a></li>
 						<li>錯誤坐姿一覽</li>
-						<li><a class="cross-effect scroll" href="#projects">一週行事曆</a></li>
+						<li><a id="calendar" href="calendar.html">行事曆</a></li>
 					</ul>
 				</div><!-- //Navbar-Collapse -->
 
@@ -244,36 +244,6 @@
 				});
 			</script>
 		<!-- //Slider-JavaScript -->
-
-		<!-- Countdown-Timer-JavaScript -->
-			<script src="js/simplyCountdown.js"></script>
-			<script>
-				var d = new Date(new Date().getTime() + 48 * 120 * 120 * 2000);
-
-				// default example
-				simplyCountdown('.simply-countdown-one', {
-					year: d.getFullYear(),
-					month: d.getMonth() + 1,
-					day: d.getDate()
-				});
-
-				// inline example
-				simplyCountdown('.simply-countdown-inline', {
-					year: d.getFullYear(),
-					month: d.getMonth() + 1,
-					day: d.getDate(),
-					inline: true
-				});
-
-				//jQuery example
-				$('#simply-countdown-losange').simplyCountdown({
-					year: d.getFullYear(),
-					month: d.getMonth() + 1,
-					day: d.getDate(),
-					enableUtc: false
-				});
-			</script>
-		<!-- //Countdown-Timer-JavaScript -->
 
 		<!-- Slide-To-Top JavaScript -->
 			<script type="text/javascript">
