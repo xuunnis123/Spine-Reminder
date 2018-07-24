@@ -336,25 +336,30 @@
 				var eventMinutes;
 				var i;
 				var toDoEvent = null;
-						
-				eventArray = eventList.split("+");
 				
-				for(i=0;i<eventArray.length;i++)
+				if(eventList!="" || eventList!=null)
 				{
-					event = eventArray[i].split(".");
-					minutes = event[2].split(":");
-					eventMinutes = parseInt(minutes[0])*60+parseInt(minutes[1]);
-					if((eventMinutes-currentTimeMinutes)>0)
+					eventArray = eventList.split("+");
+					for(i=0;i<eventArray.length;i++)
 					{
-						toDoEvent = event[2]+"&nbsp&nbsp&nbsp&nbsp&nbsp"+event[0];
-						break;
+						event = eventArray[i].split(".");
+						minutes = event[2].split(":");
+						eventMinutes = parseInt(minutes[0])*60+parseInt(minutes[1]);
+						if((eventMinutes-currentTimeMinutes)>0)
+						{
+							toDoEvent = event[2]+"&nbsp&nbsp&nbsp&nbsp&nbsp"+event[0];
+							break;
+						}
 					}
+					
+					if(toDoEvent=null)
+						nextEvent.innerHTML="今日沒有代辦事項";
+					else
+						nextEvent.innerHTML=toDoEvent;
 				}
-				
-				if(toDoEvent=null)
-					nextEvent.innerHTML="今日沒有代辦事項";
 				else
-					nextEvent.innerHTML=toDoEvent;
+					nextEvent.innerHTML="今日沒有代辦事項";
+				
 			},1000);
 			
 			
