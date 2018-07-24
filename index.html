@@ -36,7 +36,7 @@
 
 
 <!-- Body -->
-<body onload="getNextEvent()">
+<body onload="getNextEvent();checkSit()">
 
 	<!-- Header -->
 	<div class="header-aits" id="home">
@@ -201,9 +201,10 @@
 	
 	
 	<!-- Function -->
-	
+	<script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
 	<script>
-		var time;
+		var timeOnSit=0;
+		var timeOffSit=0;
 		
 		var timer=null;
 		var url;
@@ -218,7 +219,7 @@
 		var seconds_offsit = document.getElementById("seconds_offsit");
 		
 	
-	
+	/*
 		function startTime()
 		{	
 			flagOnSit=localStorage.getItem('flagOnSit');
@@ -294,6 +295,8 @@
 			
 			startTime();
 		}
+		
+	*/
 
 		//取得網址上的參數	
 		function getValue(value)
@@ -372,7 +375,92 @@
 			
 		}
 		
+		
+		
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyCsevat-cSK1iNpQaT8MtWVLEjApLxp51c",
+			authDomain: "aduinodb.firebaseapp.com",
+			databaseURL: "https://aduinodb.firebaseio.com",
+			projectId: "aduinodb",
+			storageBucket: "aduinodb.appspot.com",
+			messagingSenderId: "991564246365"
+		};
+		firebase.initializeApp(config);
+		var i,num;
+		var timer = null;
+		var data1;
+		var dataArray = [];
+		
+	  		
+		function checkSit()
+		{
+			
+			timer=setInterval(function () 
+			{
+				timeOnSit = localStorage.getItem("timeOnSit");
+				timeOffSit = localStorage.getItem("timeOffSit");
+				
+				num=0;
+				firebase.database().ref('/project_test/').once('value').then(function(snapshot) {
+				//抓資料
+				data = snapshot.val().DATA;
+				});
+				data=data.slice(0,-1);
+				data=data.slice(1);
+				dataArray=data.split(',');
+				for(i=0;i<dataArray.length;i++)
+				{
+					dataArray[i]=dataArray[i].slice(0,-1);
+					dataArray[i]=dataArray[i].slice(1);
+					num+=parseInt(dataArray[i]);
+				}	
+				
+				if((num/dataArray.length)>3)	//坐著
+				{
+					localStorage.setItem("flagOnSit","true");
+					timeOffSit=0;
+					hours_offsit.innerHTML=0;
+					minutes_offsit.innerHTML=0;
+					seconds_offsit.innerHTML=0;
+					
+					timeOnSit++;
+					localStorage.setItem('timeOnSit',timeOnSit);
+					localStorage.setItem('timeOffSit',timeOffSit);
+					var h=parseInt(timeOnSit/3600);
+					var m=parseInt(timeOnSit/60%60);
+					var s=parseInt(timeOnSit%60);
+					hours_onsit.innerHTML=h;
+					minutes_onsit.innerHTML=m;
+					seconds_onsit.innerHTML=s;
+					
+				}
+				else//站著
+				{
+					localStorage.setItem("flagOnSit","false");
+					timeOnSit = 0;
+					hours_onsit.innerHTML=0;
+					minutes_onsit.innerHTML=0;
+					seconds_onsit.innerHTML=0;
+
+					timeOffSit++;
+					localStorage.setItem('timeOffSit',timeOffSit);
+					localStorage.setItem('timeOnSit',timeOnSit);
+					var h=parseInt(timeOffSit/3600);
+					var m=parseInt(timeOffSit/60%60);
+					var s=parseInt(timeOffSit%60);
+					hours_offsit.innerHTML=h;
+					minutes_offsit.innerHTML=m;
+					seconds_offsit.innerHTML=s;
+						
+				}
+					
+			},1000);				
+		
+		}
 	</script>
+	
+
 
 
 	<!-- Custom-JavaScript-File-Links -->
