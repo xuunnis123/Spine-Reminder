@@ -253,7 +253,7 @@
 						new_event += arrayEvent[i];
 					
 					event=arrayEvent[i].split(".");
-					s+="<br>"+"<button class='btn btn-success' onclick='y(this.value)' style='width:60%;' value='"+arrayEvent[i]+"'>"+"時間:"+event[2]+"/事情:"+event[0]+"</button>";
+					s+="<br>"+"<button class='btn btn-success' onclick='y(this.value)'  value='"+arrayEvent[i]+"'>"+"時間:"+event[2]+"/事情:"+event[0]+"</button>";
 				}
 				localStorage.setItem(select_year.toString()+"-"+select_month.toString()+"-"+select_day.toString(),new_event);
 			}
@@ -266,7 +266,7 @@
 				{
 					var event=[];
 					event=arrayEvent[i].split(".");
-					s+="<br>"+"<button class='btn btn-success' onclick='y(this.value)' style='width:60%;' value='"+arrayEvent[i]+"'>"+"時間:"+event[2]+"/事情:"+event[0]+"</button>";
+					s+="<br>"+"<button class='btn btn-success' onclick='y(this.value)'  value='"+arrayEvent[i]+"'>"+"時間:"+event[2]+"/事情:"+event[0]+"</button>";
 				}	
 			}	
 		}
@@ -279,7 +279,7 @@
 				{
 					var event=[];
 					event=arrayEvent[i].split(".");
-					s+="<br>"+"<button class='btn btn-success' onclick='y(this.value)' style='width:60%;' value='"+arrayEvent[i]+"'>"+"時間:"+event[2]+"/事情:"+event[0]+"</button>";
+					s+="<br>"+"<button class='btn btn-success' onclick='y(this.value)'  value='"+arrayEvent[i]+"'>"+"時間:"+event[2]+"/事情:"+event[0]+"</button>";
 				}	
 			}
 		}	
