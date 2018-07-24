@@ -337,7 +337,7 @@
 				var i;
 				var toDoEvent = null;
 				
-				if(eventList!=null)
+				if(eventList!=null || eventList!="")
 				{
 					eventArray = eventList.split("+");
 					for(i=0;i<eventArray.length;i++)
@@ -352,7 +352,7 @@
 						}
 					}
 					
-					if(toDoEvent=null)
+					if(toDoEvent==null)
 						nextEvent.innerHTML="今日沒有代辦事項";
 					else
 						nextEvent.innerHTML=toDoEvent;
