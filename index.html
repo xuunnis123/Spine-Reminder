@@ -319,6 +319,7 @@
 		function getNextEvent()
 		{
 			var timer = null;
+			var toDoEvent = null;
 			
 			clearInterval(timer);
 				// setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
@@ -335,9 +336,9 @@
 				var minutes = [];
 				var eventMinutes;
 				var i;
-				var toDoEvent = null;
 				
-				if(eventList!=null || eventList!="")
+				
+				if(eventList!=null && eventList!="")
 				{
 					eventArray = eventList.split("+");
 					for(i=0;i<eventArray.length;i++)
@@ -350,6 +351,8 @@
 							toDoEvent = event[2]+"&nbsp&nbsp&nbsp&nbsp&nbsp"+event[0];
 							break;
 						}
+						else
+							toDoEvent=null;
 					}
 					
 					if(toDoEvent==null)
