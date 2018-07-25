@@ -55,7 +55,7 @@
 					</button>
 					<!-- Logo -->
 					<div class="logo">
-						<a class="navbar-brand logo-w3l button" href="index.html" ><font color="#0000AA">SpineReminder</font></a>
+						<a class="navbar-brand logo-w3l button" href="index.html" ><font color="#FFF77" font-family:"AdobeFanHeitiStd-Bold">SpineReminder</font></a>
 					</div>
 					<!-- //Logo -->
 				</div>
@@ -63,9 +63,9 @@
 				<div id="navbar" class="navbar-collapse navbar-right collapse">
 					<ul class="nav navbar-nav navbar-right cross-effect" id="cross-effect">
 						<li>首頁</li>
-						<li><a id="setTime" href="setTime.html">久坐提醒設定</a></li>
-						<li><a id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
-						<li><a id="calendar" href="calendar.html">行事曆</a></li>
+						<li><a font-family:"AdobeFanHeitiStd-Bold" id="setTime" href="setTime.html">久坐提醒設定</a></li>
+						<li><a font-family:"AdobeFanHeitiStd-Bold" id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
+						<li><a font-family:"AdobeFanHeitiStd-Bold" id="calendar" href="calendar.html">行事曆</a></li>
 					</ul>
 				</div><!-- //Navbar-Collapse -->
 
@@ -120,10 +120,10 @@
 				<button type="button" class="btn btn-secondary" onclick="endTime()">結束</button>
 				<!--<button onclick="endTime()">結束</button>-->
 				<div class="alert alert-danger" role="alert">
-  					接下來要做的事：
-					<font size="4" color="#2F4F4F" id="nextEvent"></font>
+  					<font font-family:"AdobeFanHeitiStd-Bold.otf" size="4">接下來要做的事：</font>
+					<font font-family:"AdobeFanHeitiStd-Bold" size="4" color="#0066FF" id="nextEvent"></font>
 				</div>
-				<div class="alert alert-warning" role="alert">在座時間 <!--</div>-->
+				<div class="alert alert-warning" size=5 role="alert"><font color="#FF8888" size ="5">在座時間</font> <!--</div>-->
 
 				<section class="examples">
 					<!--<div class="simply-countdown-losange" id="simply-countdown-losange"></div>-->
@@ -150,7 +150,7 @@
 					
 				</section>
 
-				<div class="alert alert-info" role="alert">離座時間<!--</div>-->
+				<div class="alert alert-info" font-family:"AdobeFanHeitiStd-Bold" role="alert"><font color="#009FCC" size ="5">離座時間</font><!--</div>-->
 				
 				<section class="examples">
 					<!--<div class="simply-countdown-losange" id="simply-countdown-losange"></div>-->
@@ -187,8 +187,17 @@
 	<!-- TODO List -->
 	<div class="about-w3laits" id="about">
 		<div class="container">
-			<h1>TODO List</h1>
-			<p class="about-p-1-aits">About Something Remind You To Fix Your Sitting and Remind You Something to do in the next time. We must use app and sensors to reach what we want to do</p>
+			<h1 color="#666666">Todo List</h1>
+			
+				<div class="input-group mb-3">
+  			<div class="input-group-prepend">
+  		  <div class="input-group-text">
+     	 <input type="checkbox" aria-label="Checkbox for following text input">
+   		 </div>
+  			</div>
+  			<input type="text" class="form-control" aria-label="Text input with checkbox">
+			</div>
+			
 
 		</div>
 	</div>
@@ -207,8 +216,8 @@
 		var timeOffSit=0;
 		
 		var timer=null;
-		var url;
 		var flagOnSit;
+		var time;
 		
 		var hours_onsit = document.getElementById("hours_onsit");
 		var minutes_onsit = document.getElementById("minutes_onsit");
@@ -297,30 +306,6 @@
 		}
 		
 	*/
-
-		//取得網址上的參數	
-		function getValue(value)
-		{
-			var url=window.location.toString(); //取得當前網址   
-			var str=""; //參數中等號左邊的值   
-			var str_value=""; //參數中等號右邊的值   
-			if(url.indexOf("?")!=-1){   
-				//如果網址有"?"符號   
-				var ary=url.split("?")[1].split("&");   
-				//取得"?"右邊網址後利用"&"分割字串存入ary陣列 ["a=1","b=2","c=3"]   
-				for(var i in ary){   
-					//取得陣列長度去跑迴圈，如:網址有三個參數，則會跑三次   
-					str=ary[i].split("=")[0];   
-					//取得參數"="左邊的值存入str變數中   
-					if (str == value) {   
-					//若str等於想要抓取參數 如:b   
-						str_value = decodeURI(ary[i].split("=")[1]);   
-						//取得b等號右邊的值並經過中文轉碼後存入str_value   
-					}   
-				}   
-			}   
-			return str_value;
-		}
 		
 		function getNextEvent()
 		{
@@ -362,12 +347,12 @@
 					}
 					
 					if(toDoEvent==null)
-						nextEvent.innerHTML="今日沒有代辦事項";
+						nextEvent.innerHTML="目前沒有待辦事項";
 					else
 						nextEvent.innerHTML=toDoEvent;
 				}
 				else
-					nextEvent.innerHTML="今日沒有代辦事項";
+					nextEvent.innerHTML="目前沒有待辦事項";
 				
 			},1000);
 			
@@ -388,24 +373,33 @@
 		};
 		firebase.initializeApp(config);
 		var i,num;
-		var timer = null;
-		var data1;
+		var data;
 		var dataArray = [];
 		
 	  		
 		function checkSit()
 		{
+			var updates = {};
 			
+			clearInterval(timer);
 			timer=setInterval(function () 
-			{
+			{	
+				time = localStorage.getItem("time");
 				timeOnSit = localStorage.getItem("timeOnSit");
 				timeOffSit = localStorage.getItem("timeOffSit");
 				
 				num=0;
-				firebase.database().ref('/project_test/').once('value').then(function(snapshot) {
+				var database =firebase.database().ref('/project_test/');
+				database.on('value', function(snapshot) {
+				  data = snapshot.val().DATA;
+				});
+				
+				/*firebase.database().ref('/project_test/').once('value').then(function(snapshot) {
 				//抓資料
 				data = snapshot.val().DATA;
-				});
+				});*/
+				
+
 				data=data.slice(0,-1);
 				data=data.slice(1);
 				dataArray=data.split(',');
@@ -434,6 +428,13 @@
 					minutes_onsit.innerHTML=m;
 					seconds_onsit.innerHTML=s;
 					
+					if(timeOnSit%time==0)
+					{
+						updates['/project_test/time'] = true;
+						firebase.database().ref().update(updates);
+					}
+					updates['/project_test/time'] = false;
+					firebase.database().ref().update(updates);
 				}
 				else//站著
 				{

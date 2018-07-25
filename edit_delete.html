@@ -58,7 +58,7 @@
 					</button>
 					<!-- Logo -->
 					<div class="logo">
-						<a class="navbar-brand logo-w3l button" href="index.html" ><font color="#0000AA">SpineReminder</font></a>
+						<a class="navbar-brand logo-w3l button" href="index.html" ><font color="#FFF77">SpineReminder</font></a>
 					</div>
 					<!-- //Logo -->
 				</div>
@@ -132,11 +132,24 @@
 		
 	
 	<!-- Function -->
+	<script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
 	<script>
 		var timeOnSit = localStorage.getItem('timeOnSit');
 		var timeOffSit = localStorage.getItem('timeOffSit');
+		var time = localStorage.getItem("time");
 		
 		var timer=null;
+		
+	
+		var config = {
+			apiKey: "AIzaSyCsevat-cSK1iNpQaT8MtWVLEjApLxp51c",
+			authDomain: "aduinodb.firebaseapp.com",
+			databaseURL: "https://aduinodb.firebaseio.com",
+			projectId: "aduinodb",
+			storageBucket: "aduinodb.appspot.com",
+			messagingSenderId: "991564246365"
+		};
+		firebase.initializeApp(config);
 		
 	
 		function changeTime()
@@ -150,6 +163,13 @@
 				{
 					timeOnSit++;
 					timeOffSit=0;
+					if(timeOnSit%time==0)
+					{
+						updates['/project_test/time'] = true;
+						firebase.database().ref().update(updates);
+					}
+					updates['/project_test/time'] = false;
+					firebase.database().ref().update(updates);
 				}
 				else
 				{
