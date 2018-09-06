@@ -193,7 +193,7 @@
 			<input id="todoThing" type="text"  style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
 					height: 30px;border-radius: 5px;outline: none;color: #9DBFAF;">
 			<button type="button" class="btn btn-warning" id="submit" onclick="addTodoThing()">Add</button>
-			<button type="button" class="btn btn-danger" onclick="deleteThing()">一鍵刪除</button>
+			<button type="button" class="btn btn-danger" onclick="deleteTodoThing()">一鍵刪除</button>
 			
 			<div id="todoList">
 				
@@ -463,6 +463,7 @@
 		
 		var countThing=0;
 		
+		
 		function addTodoThing()
 		{
 			
@@ -473,6 +474,8 @@
 			
 			var todoThing_Array=[];
 			var finish_Array=[];
+			
+			var i,j;
 			
 			if(new_todoThing.value!="")
 			{
@@ -491,36 +494,203 @@
 			
 			
 			todoThing_Array=todoThing.split("+");
+			finish_Array=finishOrNot.split("+");
 			
-				
-			if(new_todoThing.value!="")
+			
+			todoList.innerHTML="";
+			
+			//排序
+			for(i=0;i<todoThing_Array.length;i++)
 			{
-				todoList.innerHTML+="<input type='checkbox' id='checkbox"+ countThing + "'onclick='check_checkbox(this.value)' value=" +countThing+">";
-				todoList.innerHTML+="<font id='todoThing"+countThing+"'>"+new_todoThing.value+"</font>"+"<br>";
-					
-					
-				new_todoThing.value="";
-				countThing++;
+				for(j=0;j<todoThing_Array.length-i;j++)
+				{
+					if(finish_Array[j]>finish_Array[j+1])
+					{
+						var finish = finish_Array[j];
+						finish_Array[j] = finish_Array[j+1];
+						finish_Array[j+1] = finish;
+						
+						var tempThing = todoThing_Array[j];
+						todoThing_Array[j] = todoThing_Array[j+1];
+						todoThing_Array[j+1] = tempThing;
+					}
+				}
 			}
 			
+			//innerHTML
+			for(i=0;i<todoThing_Array.length;i++)
+			{	
+				if(finish_Array[i]==1 & todoThing_Array[i]!="")
+				{
+					todoList.innerHTML+="<input type='checkbox' checked=true id='checkbox"+ i 
+							+ "'onclick='check_checkbox(this.value)' value=" +i+">";
+					todoList.innerHTML+="<font id='todoThing"+i+"' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
+				}
+				else if(todoThing_Array[i]!="")
+				{
+					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
+					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+				}
+				
+			}
+			
+			//合併
+			todoThing="";
+			finishOrNot="";
+			for(i=0;i<finish_Array.length;i++)
+			{
+				if(todoThing=="")
+				{	
+					todoThing=todoThing_Array[i];
+					finishOrNot=finish_Array[i];
+				}
+				else
+				{
+					todoThing+="+"+todoThing_Array[i];
+					finishOrNot+="+"+finish_Array[i];
+				}
+			}
+					
+			new_todoThing.value="";
 			localStorage.setItem("todoThing",todoThing);
+			localStorage.setItem("finishOrNot",finishOrNot);
 			
 		}
 		
 		function check_checkbox(index)
 		{
+			var finishOrNot=localStorage.getItem("finishOrNot");
+			var todoThing=localStorage.getItem("todoThing");
+			var todoList = document.getElementById("todoList");
+			var finish_Array=[];
+			var todoThing_Array=[];
+			var i,j;
+			
 			var checkbox = document.getElementById("checkbox"+index);
-			var todoThing = document.getElementById("todoThing"+index);
+			var thistodoThing = document.getElementById("todoThing"+index);
+			
+			finish_Array=finishOrNot.split("+");
+			todoThing_Array=todoThing.split("+");
+			
+			//alert(index);
 			if(checkbox.checked)
 			{
-				todoThing.style="text-decoration:line-through";
-				checkbox.disabled=true;
+				thistodoThing.style="text-decoration:line-through";
+				finish_Array[index]=1;
+			}	
+			else
+			{
+				thistodoThing.style="none";
+				finish_Array[index]=0;
 			}
+			
+			//排序
+			for(i=0;i<todoThing_Array.length;i++)
+			{
+				for(j=0;j<todoThing_Array.length-i;j++)
+				{
+					if(finish_Array[j]>finish_Array[j+1])
+					{
+						var finish = finish_Array[j];
+						finish_Array[j] = finish_Array[j+1];
+						finish_Array[j+1] = finish;
+						
+						var tempThing = todoThing_Array[j];
+						todoThing_Array[j] = todoThing_Array[j+1];
+						todoThing_Array[j+1] = tempThing;
+					}
+				}
+			}
+			
+			//innerHTML
+			todoList.innerHTML="";
+			for(i=0;i<todoThing_Array.length;i++)
+			{	
+				if(finish_Array[i]==1 & todoThing_Array[i]!="")
+				{
+					todoList.innerHTML+="<input type='checkbox' checked=true id='checkbox"+ i 
+							+ "'onclick='check_checkbox(this.value)' value=" +i+">";
+					todoList.innerHTML+="<font id='todoThing"+i+"' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
+				}
+				else if(todoThing_Array[i]!="")
+				{
+					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
+					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+				}
+				
+			}
+			
+			//合併
+			todoThing="";
+			finishOrNot="";
+			for(i=0;i<finish_Array.length;i++)
+			{
+				if(todoThing=="")
+				{	
+					todoThing=todoThing_Array[i];
+					finishOrNot=finish_Array[i];
+				}
+				else
+				{
+					todoThing+="+"+todoThing_Array[i];
+					finishOrNot+="+"+finish_Array[i];
+				}
+			}
+			localStorage.setItem("todoThing",todoThing);
+			localStorage.setItem("finishOrNot",finishOrNot);
+
 		}
 		
-		function deleteThing()
+		function deleteTodoThing()
 		{
-			var todoList = document.getElementById("todoList");
+			var todoThing = localStorage.getItem("todoThing");
+			var finishOrNot=localStorage.getItem("finishOrNot");
+			
+			var todoThing_Array=[];
+			var finish_Array=[];
+			
+			var i;
+			
+			todoThing_Array=todoThing.split("+");
+			finish_Array=finishOrNot.split("+");
+			
+			
+			//合併
+			todoThing="";
+			finishOrNot="";
+			for(i=0;i<finish_Array.length;i++)
+			{
+				if(finish_Array[i]==0)
+				{
+					if(todoThing=="")
+					{	
+						todoThing=todoThing_Array[i];
+						finishOrNot=finish_Array[i];
+					}
+					else
+					{
+						todoThing+="+"+todoThing_Array[i];
+						finishOrNot+="+"+finish_Array[i];
+					}
+						
+				}
+			}
+			
+			finish_Array=finishOrNot.split("+");
+			todoThing_Array=todoThing.split("+");
+			
+			todoList.innerHTML="";
+			for(i=0;i<todoThing_Array.length;i++)
+			{	
+				if(finish_Array[i]==0 & todoThing_Array[i]!="")
+				{
+					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
+					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+				}
+			}
+			
+			localStorage.setItem("finishOrNot",finishOrNot);
+			localStorage.setItem("todoThing",todoThing);
 		}
 	</script>
 	
