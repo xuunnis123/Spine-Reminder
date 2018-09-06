@@ -187,15 +187,16 @@
 	<!-- TODO List -->
 	<div class="about-w3laits" id="about">
 		<div class="container">
-			<h1 color="#666666">Todo List</h1>
+			<font color="#666666" font size="8">Todo List</font>
+			</br>
 			
-				<div class="input-group mb-3">
-  			<div class="input-group-prepend">
-  		  <div class="input-group-text">
-     	 <input type="checkbox" aria-label="Checkbox for following text input">
-   		 </div>
-  			</div>
-  			<input type="text" class="form-control" aria-label="Text input with checkbox">
+			<input id="todoThing" type="text"  style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
+					height: 30px;border-radius: 5px;outline: none;color: #9DBFAF;">
+			<button type="button" class="btn btn-warning" id="submit" onclick="addTodoThing()">Add</button>
+			<button type="button" class="btn btn-danger" onclick="deleteThing()">一鍵刪除</button>
+			
+			<div id="todoList">
+				
 			</div>
 			
 
@@ -458,6 +459,68 @@
 					
 			},1000);				
 		
+		}
+		
+		var countThing=0;
+		
+		function addTodoThing()
+		{
+			
+			var new_todoThing = document.getElementById("todoThing");
+			var todoThing = localStorage.getItem("todoThing");
+			var todoList = document.getElementById("todoList");
+			var finishOrNot=localStorage.getItem("finishOrNot");
+			
+			var todoThing_Array=[];
+			var finish_Array=[];
+			
+			if(new_todoThing.value!="")
+			{
+				if(todoThing !=null)
+				{
+					todoThing = new_todoThing.value+"+"+todoThing;
+					finishOrNot = "0+"+finishOrNot;
+				}
+				
+				else
+				{
+					todoThing = new_todoThing.value;
+					finishOrNot="0";
+				}
+			}
+			
+			
+			todoThing_Array=todoThing.split("+");
+			
+				
+			if(new_todoThing.value!="")
+			{
+				todoList.innerHTML+="<input type='checkbox' id='checkbox"+ countThing + "'onclick='check_checkbox(this.value)' value=" +countThing+">";
+				todoList.innerHTML+="<font id='todoThing"+countThing+"'>"+new_todoThing.value+"</font>"+"<br>";
+					
+					
+				new_todoThing.value="";
+				countThing++;
+			}
+			
+			localStorage.setItem("todoThing",todoThing);
+			
+		}
+		
+		function check_checkbox(index)
+		{
+			var checkbox = document.getElementById("checkbox"+index);
+			var todoThing = document.getElementById("todoThing"+index);
+			if(checkbox.checked)
+			{
+				todoThing.style="text-decoration:line-through";
+				checkbox.disabled=true;
+			}
+		}
+		
+		function deleteThing()
+		{
+			var todoList = document.getElementById("todoList");
 		}
 	</script>
 	
