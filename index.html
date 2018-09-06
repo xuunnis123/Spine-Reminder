@@ -36,7 +36,7 @@
 
 
 <!-- Body -->
-<body onload="getNextEvent();checkSit()">
+<body onload="getNextEvent();checkSit();initialTodoList()">
 
 	<!-- Header -->
 	<div class="header-aits" id="home">
@@ -66,6 +66,7 @@
 						<li><a font-family:"AdobeFanHeitiStd-Bold" id="setTime" href="setTime.html">久坐提醒設定</a></li>
 						<li><a font-family:"AdobeFanHeitiStd-Bold" id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
 						<li><a font-family:"AdobeFanHeitiStd-Bold" id="calendar" href="calendar.html">行事曆</a></li>
+						<li><a id="analysis" href="analysis.html">分析</a></li>
 					</ul>
 				</div><!-- //Navbar-Collapse -->
 
@@ -429,11 +430,15 @@
 					minutes_onsit.innerHTML=m;
 					seconds_onsit.innerHTML=s;
 					
-					if(timeOnSit%time==0)
+					if(time!=0)
 					{
-						updates['/project_test/time'] = true;
-						firebase.database().ref().update(updates);
+						if(timeOnSit%time==0)
+						{
+							updates['/project_test/time'] = true;
+							firebase.database().ref().update(updates);
+						}
 					}
+					
 					updates['/project_test/time'] = false;
 					firebase.database().ref().update(updates);
 				}
@@ -461,8 +466,40 @@
 		
 		}
 		
-		var countThing=0;
-		
+
+		function initialTodoList()
+		{
+			var todoThing = localStorage.getItem("todoThing");
+			var todoList = document.getElementById("todoList");
+			var finishOrNot=localStorage.getItem("finishOrNot");
+			
+			var todoThing_Array=[];
+			var finish_Array=[];
+			
+			var i,j;
+			
+			
+			todoThing_Array=todoThing.split("+");
+			finish_Array=finishOrNot.split("+");
+			
+			//innerHTML
+			for(i=0;i<todoThing_Array.length;i++)
+			{	
+				if(finish_Array[i]==1 & todoThing_Array[i]!="")
+				{
+					todoList.innerHTML+="<input type='checkbox' checked=true id='checkbox"+ i 
+							+ "'onclick='check_checkbox(this.value)' value=" +i+">";
+					todoList.innerHTML+="<font id='todoThing"+i+"' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
+				}
+				else if(todoThing_Array[i]!="")
+				{
+					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
+					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+				}
+				
+			}
+			
+		}
 		
 		function addTodoThing()
 		{
@@ -479,7 +516,7 @@
 			
 			if(new_todoThing.value!="")
 			{
-				if(todoThing !=null)
+				if(todoThing !=null & todoThing!="")
 				{
 					todoThing = new_todoThing.value+"+"+todoThing;
 					finishOrNot = "0+"+finishOrNot;
@@ -531,7 +568,6 @@
 					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
 					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
-				
 			}
 			
 			//合併
@@ -571,8 +607,7 @@
 			
 			finish_Array=finishOrNot.split("+");
 			todoThing_Array=todoThing.split("+");
-			
-			//alert(index);
+
 			if(checkbox.checked)
 			{
 				thistodoThing.style="text-decoration:line-through";

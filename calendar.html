@@ -70,6 +70,7 @@
 						<li><a id="setTime" href="setTime.html">久坐提醒設定</a></li>
 						<li><a id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
 						<li>行事曆</li>
+						<li><a id="analysis" href="analysis.html">分析</a></li>
 					</ul>
 				</div><!-- //Navbar-Collapse -->
 
@@ -170,11 +171,16 @@
 				{
 					timeOnSit++;
 					timeOffSit=0;
-					if(timeOnSit%time==0)
+					
+					if(time!=0)
 					{
-						updates['/project_test/time'] = true;
-						firebase.database().ref().update(updates);
+						if(timeOnSit%time==0)
+						{
+							updates['/project_test/time'] = true;
+							firebase.database().ref().update(updates);
+						}
 					}
+					
 					updates['/project_test/time'] = false;
 					firebase.database().ref().update(updates);
 				}

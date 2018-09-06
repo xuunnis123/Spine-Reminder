@@ -122,10 +122,10 @@ input:checked + .slider:before {
 				<div id="navbar" class="navbar-collapse navbar-right collapse">
 					<ul class="nav navbar-nav navbar-right cross-effect" id="cross-effect">
 						<li><a id="index" href="index.html">首頁</a></li>
-						<li>久坐提醒設定</li>
+						<li><a id="setTime" href="setTime.html">久坐提醒設定</a></li>
 						<li><a id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
 						<li><a id="calendar" href="calendar.html">行事曆</a></li>
-						<li><a id="analysis" href="analysis.html">分析</a></li>
+						<li>分析</li>
 					</ul>
 				</div><!-- //Navbar-Collapse -->
 
@@ -165,26 +165,6 @@ input:checked + .slider:before {
 
 	</div>
 	<!-- //Header -->
-	<div>
-	<h1>久坐提醒</h1>
-	<label class="switch">
-  <input type="checkbox" checked=true id= "ifchecked">
-  
-  <span class="slider round" type="button" onclick="alarmtime()"></span> 
-	<label>
-	</div>
-	
-	<section class="special-w3layouts" >
-		<div class="container" id="set">
-			<h2 class="text-center wthree w3-agileits"><font face="標楷體">久坐時間設定</font></h2>
-			
-			
-			<div class="clearfix"></div>
-			<input id="time" type="text" placeholder="分鐘" style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
-					height: 30px;border-radius: 5px;outline: none;color: #9DBFAF;">
-			<button type="button" class="btn btn-warning" id="submit" onclick="setTime()">確認</button>
-		</div>
-	</section>
 	
 	
 	
@@ -211,23 +191,6 @@ input:checked + .slider:before {
 			messagingSenderId: "991564246365"
 		};
 		firebase.initializeApp(config);
-		
-		
-		function alarmtime()
-		{
-			var set = document.getElementById("set");
-			var check = document.getElementById("ifchecked");
-			
-			if(check.checked){
-				$(set).hide();
-				localStorage.setItem("time",0);
-			}
-			else {
-				$(set).show();
-				localStorage.setItem("time",600);
-			}
-		}
-	
 	
 		function changeTime()
 		{
@@ -264,13 +227,6 @@ input:checked + .slider:before {
 				
 			},1000);
 			
-		}
-		
-		function setTime()
-		{
-			var time = document.getElementById("time");
-			if(time.value!="" && time.value!=null)
-				localStorage.setItem("time",time.value);
 		}
 
 		
