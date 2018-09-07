@@ -29,73 +29,17 @@
 <!-- //Font-Awesome-File-Links -->
 
 <!-- Supportive-JavaScript --> <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-<style>
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
 
-/* Hide default HTML checkbox */
-.switch input {display:none;}
+<!-- chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
-/* The slider */
-.slider {
- position: absolute;
-  
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-</style>
 </head>
 <!-- //Head -->
 
 
 
 <!-- Body -->
-<body onload="changeTime()">
+<body onload="changeTime();makeChart()">
 
 	<!-- Header -->
 	<div class="header-aits" id="home">
@@ -162,6 +106,21 @@ input:checked + .slider:before {
 		<!-- //Slider-1 -->
 
 		<div class="clearfix"></div>
+		
+		
+		<div>
+			<canvas id="LineChart" width="700" height="500"></canvas>
+			<div style="text-align:center;">
+				<font style="font-family:inherit;font-size:30px;">一周就座時數一覽</font>
+			</div>
+		</div>
+		
+		<div>
+			<canvas id="PieChart" width="700" height="500"></canvas>
+			<div style="text-align:center;">
+				<font style="font-family:inherit;font-size:30px;">就坐離座比例</font>
+			</div>
+		</div>
 
 	</div>
 	<!-- //Header -->
@@ -228,6 +187,102 @@ input:checked + .slider:before {
 			},1000);
 			
 		}
+		
+		var dateArray=[];
+		var today = new Date();
+		var i;
+		for(i=1;i<=7;i++)
+		{
+			var newdate = new Date(today-i*24*3600*1000);
+			dateArray[i]=newdate.getMonth()+1+"月"+newdate.getDate()+"日";
+		}
+		
+		
+		var lineChartData = {
+			labels: [dateArray[7], dateArray[6], dateArray[5], dateArray[4], dateArray[3], dateArray[2], dateArray[1]], //顯示區間名稱
+			datasets: [{
+				label: '時數', // tootip 出現的名稱
+				lineTension: 0, // 曲線的彎度，設0 表示直線
+				backgroundColor: "#29b288",  //填滿的背景顏色
+				borderColor: "#29b288",  //線的顏色
+				borderWidth: 5,
+				data: [6.5, 3.5, 5.9, 10.8, 7.6, 8.2, 12.3], // 資料
+				fill: false, // 是否填滿色彩
+			}/*, {
+				label: '罹癌後開始使用',
+				lineTension: 0,
+				fill: false,
+				backgroundColor: "#29b288",
+				borderColor: "#29b288",
+				borderWidth: 5,
+				data: [12, 14, 18, 20, 21, 34, 60, 80, 200],
+			},*/]
+		};
+		
+		var pieChartData={
+			labels: ["就座","離座"], //顯示區間名稱
+			datasets: [{
+                    data:[60,90],  //預設資料
+                    backgroundColor: [   //資料顏色
+						"#00A1FF",
+						"#FF0004"
+                    ],
+                }]
+		};
+		
+		function drawLineCanvas(ctx,data) {
+			window.myLine = new Chart(ctx, {  //先建立一個 chart
+				type: 'line', // 型態
+				data: data,
+				options: {
+						responsive: true,
+						legend: { //是否要顯示圖示
+							display: false
+						},
+						tooltips: { //是否要顯示 tooltip
+							enabled: true
+						},
+						scales: {  //是否要顯示 x、y 軸
+							xAxes: [{
+								display: true
+							}],
+							yAxes: [{
+								display: true,
+								ticks: {
+								max: 13,
+								min: 0,
+								stepSize: 1
+							}
+							}]
+						}
+					}
+			});
+		};
+		
+		function drawPieCanvas(ctx,data) {
+			window.myPie = new Chart(ctx, {  //先建立一個 chart
+				type: 'pie', // 型態
+				data: data,
+				options:
+				{
+					legend: { //是否要顯示圖示
+							display: false
+						},
+						tooltips: { //是否要顯示 tooltip
+							enabled: true
+						}
+				}
+			});
+		};
+		
+		function makeChart()
+		{
+			var ctx = document.getElementById("LineChart").getContext("2d");
+			drawLineCanvas(ctx,lineChartData);
+			ctx = document.getElementById("PieChart").getContext("2d");
+			drawPieCanvas(ctx,pieChartData);
+		}
+
 
 		
 	</script>

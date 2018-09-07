@@ -188,7 +188,7 @@
 	<!-- TODO List -->
 	<div class="about-w3laits" id="about">
 		<div class="container">
-			<font color="#666666" font size="8">Todo List</font>
+			<font color="#666666" font size="20">Todo List</font>
 			</br>
 			
 			<input id="todoThing" type="text"  style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
@@ -489,12 +489,12 @@
 				{
 					todoList.innerHTML+="<input type='checkbox' checked=true id='checkbox"+ i 
 							+ "'onclick='check_checkbox(this.value)' value=" +i+">";
-					todoList.innerHTML+="<font id='todoThing"+i+"' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
+					todoList.innerHTML+="<font id='todoThing"+i+"' font size='6' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
 				else if(todoThing_Array[i]!="")
 				{
 					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
-					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+					todoList.innerHTML+="<font id='todoThing"+i+"' font size='6'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
 				
 			}
@@ -561,13 +561,14 @@
 				{
 					todoList.innerHTML+="<input type='checkbox' checked=true id='checkbox"+ i 
 							+ "'onclick='check_checkbox(this.value)' value=" +i+">";
-					todoList.innerHTML+="<font id='todoThing"+i+"' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
+					todoList.innerHTML+="<font id='todoThing"+i+"' font size='6' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
 				else if(todoThing_Array[i]!="")
 				{
 					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
-					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+					todoList.innerHTML+="<font id='todoThing"+i+"' font size='6'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
+				
 			}
 			
 			//合併
@@ -645,12 +646,12 @@
 				{
 					todoList.innerHTML+="<input type='checkbox' checked=true id='checkbox"+ i 
 							+ "'onclick='check_checkbox(this.value)' value=" +i+">";
-					todoList.innerHTML+="<font id='todoThing"+i+"' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
+					todoList.innerHTML+="<font id='todoThing"+i+"' font size='6' style='text-decoration:line-through;'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
 				else if(todoThing_Array[i]!="")
 				{
 					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
-					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+					todoList.innerHTML+="<font id='todoThing"+i+"' font size='6'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
 				
 			}
@@ -720,7 +721,7 @@
 				if(finish_Array[i]==0 & todoThing_Array[i]!="")
 				{
 					todoList.innerHTML+="<input type='checkbox' id='checkbox"+ i + "'onclick='check_checkbox(this.value)' value=" +i+">";
-					todoList.innerHTML+="<font id='todoThing"+i+"'>"+todoThing_Array[i]+"</font>"+"<br>";
+					todoList.innerHTML+="<font id='todoThing"+i+"'font size='6'>"+todoThing_Array[i]+"</font>"+"<br>";
 				}
 			}
 			
