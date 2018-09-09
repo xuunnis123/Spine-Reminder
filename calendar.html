@@ -14,6 +14,10 @@
 	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<!-- //Meta-Tags -->
 	
+	<!-- ClockPicker  -->
+	<link rel="stylesheet" type="text/css" href="clockpicker/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="clockpicker/dist/bootstrap-clockpicker.min.css">
+	
 	<!-- Custom-Stylesheet-Links -->
 	<!-- Bootstrap-CSS --> 	<link rel="stylesheet" href="css/bootstrap.min.css"	type="text/css" media="all">
 	<!-- Index-Page-CSS --> <link rel="stylesheet" href="css/style.css" 		type="text/css" media="all">
@@ -29,11 +33,9 @@
 	<!-- TTF --> <link rel="stylesheet" href="fonts/fontawesome-webfont.ttf" type="text/css" media="all">
 	<!-- //Font-Awesome-File-Links -->
 
-	<!-- Supportive-JavaScript --> <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	<!-- Supportive-JavaScript <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script> --> 
 	
-	<!-- ClockPicker -->
-	<link rel="stylesheet" type="text/css" href="clockpicker/assets/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="clockpicker/dist/bootstrap-clockpicker.min.css">
+	
 	
 </head>
 
@@ -118,11 +120,11 @@
 	</section>	
 	
 	<script>
-			//初始化日历，以body作为容器
-			//var container = document.body;
-			var container = document.getElementById("calendar");
-			Calendar.controller.init(container);
-		</script>
+		//初始化日历，以body作为容器
+		//var container = document.body;
+		var container = document.getElementById("calendar");
+		Calendar.controller.init(container);
+	</script>
 		<div style="padding: 0 0 0 100px;">
 			<input id="title" type="text" class="searchTerm" placeholder="行程">
 			<input id="place" type="text" class="searchTerm" placeholder="地點">
