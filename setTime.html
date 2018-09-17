@@ -166,12 +166,23 @@ input:checked + .slider:before {
 	</div>
 	<!-- //Header -->
 	<div>
-	<h1>久坐提醒</h1>
-	<label class="switch">
-  <input type="checkbox" checked=true id= "ifchecked">
-  
-  <span class="slider round" type="button" onclick="alarmtime()"></span> 
-	<label>
+	<h1>設定</h1>
+	
+	<div class="clearfix"></div>
+		<input id="weight" type="text" placeholder="公斤" style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
+					height: 30px;border-radius: 5px;outline: none;color: #9DBFAF;">
+		<button type="button" class="btn btn-warning" id="submit" onclick="setWeight()">確認</button>
+	<br>
+
+	</div>
+	
+	<div>
+		<label class="switch">
+		
+		  <input type="checkbox" checked=true id= "ifchecked">
+		  
+		  <span class="slider round" type="button" onclick="alarmtime()"></span> 
+		<label>
 	</div>
 	
 	<section class="special-w3layouts" >
@@ -270,7 +281,29 @@ input:checked + .slider:before {
 		{
 			var time = document.getElementById("time");
 			if(time.value!="" && time.value!=null)
+			{
 				localStorage.setItem("time",time.value);
+				alert("久坐時間："+time+"分鐘設定完畢！");
+			}
+			time.value="";	
+		}
+		
+		function setWeight()
+		{
+			var weight = document.getElementById("weight");
+			if(weight.value!="" && weight.value!=null)
+			{
+				if(weight.value<=150 && weight.value>=0)
+				{
+					localStorage.setItem("weight",weight.value);
+					alert("體重："+weight.value+"分斤設定完畢！");
+				}
+				else
+				{
+					alert("設定失敗！！！\n"+"合法體重為0至150公斤");
+				}
+			}
+			weight.value="";
 		}
 
 		

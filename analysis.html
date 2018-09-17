@@ -118,7 +118,7 @@
 		<div>
 			<canvas id="PieChart" width="700" height="500"></canvas>
 			<div style="text-align:center;">
-				<font style="font-family:inherit;font-size:30px;">就坐離座比例</font>
+				<font style="font-family:inherit;font-size:30px;">正確/錯誤坐姿比例</font>
 			</div>
 		</div>
 
@@ -220,12 +220,12 @@
 		};
 		
 		var pieChartData={
-			labels: ["就座","離座"], //顯示區間名稱
+			labels: ["正確坐姿","錯誤坐姿"], //顯示區間名稱
 			datasets: [{
-                    data:[60,90],  //預設資料
+                    data:[70,80],  //預設資料
                     backgroundColor: [   //資料顏色
-						"#00A1FF",
-						"#FF0004"
+						"#00DD00",
+						"#FF0000"
                     ],
                 }]
 		};

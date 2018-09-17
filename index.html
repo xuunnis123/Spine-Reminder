@@ -229,6 +229,11 @@
 		var minutes_offsit = document.getElementById("minutes_offsit");
 		var seconds_offsit = document.getElementById("seconds_offsit");
 		
+		
+		function startTime()
+		{
+			document.write('<img src="images/a1.png">');
+		}
 	
 	/*
 		function startTime()
@@ -377,11 +382,13 @@
 		var i,num;
 		var data;
 		var dataArray = [];
+		var checkArray = [];
 		
 	  		
 		function checkSit()
 		{
 			var updates = {};
+			var weight = localStorage.getItem("weight");
 			
 			clearInterval(timer);
 			timer=setInterval(function () 
@@ -395,6 +402,7 @@
 				database.on('value', function(snapshot) {
 				  data = snapshot.val().DATA;
 				});
+
 				
 				/*firebase.database().ref('/project_test/').once('value').then(function(snapshot) {
 				//抓資料
@@ -402,9 +410,10 @@
 				});*/
 				
 
-				data=data.slice(0,-1);
-				data=data.slice(1);
-				dataArray=data.split(',');
+				data=data.slice(0,-1);  //刪掉尾巴]括號
+				data=data.slice(1);  //刪掉開頭[括號
+				dataArray=data.split(',');  //分割成六個感測器值
+				
 				for(i=0;i<dataArray.length;i++)
 				{
 					dataArray[i]=dataArray[i].slice(0,-1);
@@ -412,7 +421,8 @@
 					num+=parseInt(dataArray[i]);
 				}	
 				
-				if((num/dataArray.length)>3)	//坐著
+				
+				if((num/dataArray.length)>3)	//感測器平均值大於3坐著
 				{
 					localStorage.setItem("flagOnSit","true");
 					timeOffSit=0;
@@ -461,6 +471,99 @@
 					seconds_offsit.innerHTML=s;
 						
 				}
+				
+				
+				
+				if(timeOnSit%5==0 && timeOnSit>0)    //5個一循還
+				{
+				
+					for(i=0;i<6;i++)
+					{
+						checkArray[i]=0;//歸零
+					}
+					
+					//data1
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data1;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					
+					//data2
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data2;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					//data3
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data3;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					//data4
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data4;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					//data5
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data5;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					
+					for(i=0;i<6;i++)
+					{
+						checkArray[i]/=5;
+						
+					}
+					
+					for(i=0;i<6;i++)
+					{
+						checkArray[i]/=weight;
+						//console.log(checkArray[i]);
+					}
+					//console.log("-------------------------------------------------");
+
+				}
+				
 					
 			},1000);				
 		
