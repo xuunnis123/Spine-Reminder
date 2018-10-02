@@ -562,15 +562,27 @@
 						checkArray[i]=parseInt(checkArray[i]);
 					}
 					
-					for(i=0;i<4;i++)
+					for(i=0;i<6;i++)
 					{
-						var sub=0;
-						sub = checkArray[i]-averageArray[i];
-						console.log(sub);
-						if(sub<0)
-							sub=-sub;
-						if(sub>150)
-							sitCorrect=false;
+						if(i<4)
+						{
+							var sub=0;
+							if(i<2)
+								sub = checkArray[i]-(averageArray[i]*0.3);
+							else
+								sub = checkArray[i]-(averageArray[i]*0.4);
+							console.log(sub);
+							if(sub<0)
+								sub=-sub;
+							if(sub>150)
+								sitCorrect=false;
+						}
+						else
+						{
+							if(checkArray[i]<=10)
+								sitCorrect=false;
+						}
+						
 						
 					}
 					
@@ -578,9 +590,7 @@
 					{
 						var sub=0;
 						sub = checkArray[i]-averageArray[i];
-						console.log(sub);
-						if(checkArray[i]<=10)
-							sitCorrect=false;
+						
 					}
 					
 					if(sitCorrect)
