@@ -165,36 +165,44 @@ input:checked + .slider:before {
 
 	</div>
 	<!-- //Header -->
-	<div>
+	<div id="set">
 	<h1>設定</h1>
+		<div>
+			<label class="switch">
+			
+			  <input type="checkbox" checked=true id= "ifchecked">
+			  
+			  <span class="slider round" type="button" onclick="alarmtime()"></span> 
+			<label>
+		</div>
+		
+		<section class="special-w3layouts" >
+			<div class="container" id="set">
+				<h2 class="text-center wthree w3-agileits"><font face="標楷體">久坐時間設定</font></h2>
+				
+				
+				<div class="clearfix"></div>
+				<input id="time" type="text" placeholder="分鐘" style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
+						height: 30px;border-radius: 5px;outline: none;color: #9DBFAF;">
+				<button type="button" class="btn btn-warning" id="submit" onclick="setTime()">確認</button>
+			</div>
+		</section>
+		
+		<h2 class="text-center wthree w3-agileits"><font face="標楷體">初始坐姿設定</font></h2>
+		<button type="button" class="btn btn-warning" id="submit" onclick="initial_Set()">設定</button>
 	
-	<div class="clearfix"></div>
-		<input id="weight" type="text" placeholder="公斤" style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
-					height: 30px;border-radius: 5px;outline: none;color: #9DBFAF;">
-		<button type="button" class="btn btn-warning" id="submit" onclick="setWeight()">確認</button>
-	<br>
 
 	</div>
 	
-	<div>
-		<label class="switch">
-		
-		  <input type="checkbox" checked=true id= "ifchecked">
-		  
-		  <span class="slider round" type="button" onclick="alarmtime()"></span> 
-		<label>
-	</div>
 	
-	<section class="special-w3layouts" >
-		<div class="container" id="set">
-			<h2 class="text-center wthree w3-agileits"><font face="標楷體">久坐時間設定</font></h2>
-			
-			
-			<div class="clearfix"></div>
-			<input id="time" type="text" placeholder="分鐘" style="float: center;width: 60%;border: 3px solid #00B4CC;padding: 5px;
-					height: 30px;border-radius: 5px;outline: none;color: #9DBFAF;">
-			<button type="button" class="btn btn-warning" id="submit" onclick="setTime()">確認</button>
-		</div>
+	
+	<section class="examples" id="clock" hidden=true>
+						
+		<span align="center">
+			<span class="simply-word">seconds</span>
+			<font size="50" color="#2F4F4F" id="seconds"></font>
+		</span>
+					
 	</section>
 	
 	
@@ -211,6 +219,8 @@ input:checked + .slider:before {
 		var IsAlarm = false;
 		var picktime = true;
 		var timer=null;
+		
+		
 		
 	
 		var config = {
@@ -288,6 +298,92 @@ input:checked + .slider:before {
 			time.value="";	
 		}
 		
+		
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyCsevat-cSK1iNpQaT8MtWVLEjApLxp51c",
+			authDomain: "aduinodb.firebaseapp.com",
+			databaseURL: "https://aduinodb.firebaseio.com",
+			projectId: "aduinodb",
+			storageBucket: "aduinodb.appspot.com",
+			messagingSenderId: "991564246365"
+		};
+		firebase.initializeApp(config);
+		
+		function initial_Set()
+		{
+			var timer2=null;
+			var seconds = document.getElementById("seconds");
+			var data;
+			var dataArray=[];
+			var sumArray=[];
+			var database =firebase.database().ref('/project_test/');
+			var clocktime=5;
+			
+			//clearInterval(timer2);
+			$(set).hide();
+			$(clock).show();
+			
+			for(i=0;i<6;i++)
+			{
+				sumArray[i]=0;//歸零
+			}
+			
+			timer2=setInterval(function () 
+			{
+				if(localStorage.getItem("flagOnSit")=="true")
+				{	
+					
+					
+
+					if(clocktime<0)
+					{
+						clocktime=5;
+						$(clock).hide();
+						alert("設定完成");
+						$(set).show();
+						for(i=0;i<6;i++)
+						{
+							sumArray[i]/=6;
+							sumArray[i]=parseInt(sumArray[i]);
+							console.log(sumArray[i]);
+						}
+						var average="";
+						for(i=0;i<6;i++)
+						{
+							
+							if(i==5)
+								average+=sumArray[i];
+							else
+								average+=sumArray[i]+"+";
+							localStorage.setItem("average",average);
+						}
+						alert(average);
+						clearInterval(timer2);
+					}
+					else{
+						database.on('value', function(snapshot) {
+							 data = snapshot.val().DATA;
+						});
+						data=data.slice(0,-1);  //刪掉尾巴]括號
+						data=data.slice(1);  //刪掉開頭[括號
+						dataArray=data.split(',');  //分割成六個感測器值
+						for(i=0;i<6;i++)
+						{
+							dataArray[i]=dataArray[i].slice(0,-1);
+							dataArray[i]=dataArray[i].slice(1);
+							sumArray[i]+=parseInt(dataArray[i]);
+							console.log(dataArray[i]);
+						}
+					}
+					seconds.innerHTML=clocktime;
+					clocktime=clocktime-1;	
+				}
+			},1000);
+
+		}
+		
+		/*
 		function setWeight()
 		{
 			var weight = document.getElementById("weight");
@@ -304,7 +400,7 @@ input:checked + .slider:before {
 				}
 			}
 			weight.value="";
-		}
+		}*/
 
 		
 	</script>

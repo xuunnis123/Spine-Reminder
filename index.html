@@ -153,7 +153,7 @@
 
 				<div class="alert alert-info" font-family:"AdobeFanHeitiStd-Bold" role="alert"><font color="#009FCC" size ="5">離座時間</font><!--</div>-->
 				
-				<section class="examples">
+				<section class="examples" >
 					<!--<div class="simply-countdown-losange" id="simply-countdown-losange"></div>-->
 					
 					<!--<div>-->
@@ -422,7 +422,7 @@
 				}	
 				
 				
-				if((num/dataArray.length)>3)	//感測器平均值大於3坐著
+				if((num/dataArray.length)>6)	//感測器平均值大於6坐著
 				{
 					localStorage.setItem("flagOnSit","true");
 					timeOffSit=0;
@@ -473,10 +473,17 @@
 				}
 				
 				
-				
+				//判斷正確與否
 				if(timeOnSit%5==0 && timeOnSit>0)    //5個一循還
 				{
-				
+					//alert(localStorage.getItem("average"));
+					
+					var average = localStorage.getItem("average");
+					var averageArray=[];
+					var sitCorrect = true;
+					
+					averageArray=average.split("+");
+					
 					for(i=0;i<6;i++)
 					{
 						checkArray[i]=0;//歸零
@@ -552,16 +559,34 @@
 					for(i=0;i<6;i++)
 					{
 						checkArray[i]/=5;
+						checkArray[i]=parseInt(checkArray[i]);
+					}
+					
+					for(i=0;i<4;i++)
+					{
+						var sub=0;
+						sub = checkArray[i]-averageArray[i];
+						console.log(sub);
+						if(sub<0)
+							sub=-sub;
+						if(sub>150)
+							sitCorrect=false;
 						
 					}
 					
-					for(i=0;i<6;i++)
+					for(i=4;i<6;i++)
 					{
-						checkArray[i]/=weight;
-						//console.log(checkArray[i]);
+						var sub=0;
+						sub = checkArray[i]-averageArray[i];
+						console.log(sub);
+						if(checkArray[i]<=10)
+							sitCorrect=false;
 					}
-					//console.log("-------------------------------------------------");
-
+					
+					if(sitCorrect)
+						console.log("目前坐姿正確");
+					else
+						console.log("目前坐姿錯誤");
 				}
 				
 					
