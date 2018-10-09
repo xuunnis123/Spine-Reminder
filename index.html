@@ -382,12 +382,18 @@
 		var dataArray = [];
 		var checkArray = []; //存目前坐姿
 		var sitArray= []; //存7天內就坐時間
-		var wrongSitTime = localStorage.getItem('wrongSitTime');//錯誤坐姿時間
-		var correctSitTime = localStorage.getItem('correctSitTime');//正確坐姿時間
+		var wrongSitTime = localStorage.getItem('wrongSitTime');//短暫錯誤坐姿時間
+		var dayWrongSitTime = localStorage.getItem('dayWrongSitTime');//一天錯誤坐姿時間
 		var daySitTime=localStorage.getItem('daySitTime');
 		
-		wrongSitTime=parseInt(wrongSitTime);
-		correctSitTime=parseInt(correctSitTime);
+		if(wrongSitTime!=null)
+			wrongSitTime = parseInt(wrongSitTime);
+		else
+			wrongSitTime = 0;
+		if(dayWrongSitTime!=null)
+			dayWrongSitTime = parseInt(dayWrongSitTime);
+		else
+			dayWrongSitTime = 0;
 		
 	  		
 		function checkSit()
@@ -452,9 +458,12 @@
 							}
 							localStorage.setItem("sit",sit);
 						}
-						localStorage.setItem("correctSitTime",correctSitTime);
-						localStorage.setItem("wrongSitTime",wrongSitTime);
+						localStorage.setItem('YesterdaySitTime',daySitTime);
+						localStorage.setItem('YesterdayWrongSitTime',dayWrongSitTime);
 						daySitTime=0;
+						dayWrongSitTime=0;
+						localStorage.setItem('daySitTime',daySitTime);
+						localStorage.setItem('dayWrongSitTime',dayWrongSitTime);
 					}
 					
 					localStorage.setItem("flagOnSit","true");
@@ -491,7 +500,6 @@
 								updates['/project_test/error'] = "2";
 							firebase.database().ref().update(updates);
 							wrongSitTime=0;
-							correctSitTime=0;
 						}
 					}
 					
@@ -501,7 +509,6 @@
 				else//站著
 				{
 					wrongSitTime=0;
-					correctSitTime=0;
 
 					localStorage.setItem("flagOnSit","false");
 					timeOnSit = 0;
@@ -640,19 +647,18 @@
 					if(sitCorrect)
 					{
 						console.log("目前坐姿正確");
-						correctSitTime+=5;
 					}
 						
 					else
 					{
 						console.log("目前坐姿錯誤");
 						wrongSitTime+=5;
+						dayWrongSitTime+=5;
 					}	
 				}
 				
-				localStorage.setItem('correctSitTime',correctSitTime);
 				localStorage.setItem('wrongSitTime',wrongSitTime);
-				
+				localStorage.setItem('dayWrongSitTime',dayWrongSitTime);
 			},1000);				
 		
 		}

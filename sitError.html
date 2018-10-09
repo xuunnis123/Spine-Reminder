@@ -190,11 +190,14 @@
 		var time = localStorage.getItem("time");
 		
 		var wrongSitTime = localStorage.getItem("wrongSitTime");
-		var correctSitTime = localStorage.getItem("correctSitTime");
+		wrongSitTime = parseInt(wrongSitTime);
+		var dayWrongSitTime = localStorage.getItem('dayWrongSitTime');
+		dayWrongSitTime = parseInt(dayWrongSitTime);
 		var sitArray= []; //存7天內就坐時間
 		var daySitTime=localStorage.getItem('daySitTime');
 		var checkArray = []; //存現在坐姿
 		var updates = {};
+		
 		
 		var timer=null;
 		
@@ -244,9 +247,12 @@
 							}
 							localStorage.setItem("sit",sit);
 						}
-						localStorage.setItem("correctSitTime",correctSitTime);
-						localStorage.setItem("wrongSitTime",wrongSitTime);
+						localStorage.setItem('YesterdaySitTime',daySitTime);
+						localStorage.setItem('YesterdayWrongSitTime',dayWrongSitTime);
 						daySitTime=0;
+						dayWrongSitTime=0;
+						localStorage.setItem('daySitTime',daySitTime);
+						localStorage.setItem('dayWrongSitTime',dayWrongSitTime);
 					}
 					
 					daySitTime++;
@@ -270,9 +276,8 @@
 								updates['/project_test/error'] = "2";
 							firebase.database().ref().update(updates);
 							wrongSitTime=0;
-							correctSitTime=0;
-						}
-								
+							localStorage.setItem('wrongSitTime',wrongSitTime);
+						}		
 					}
 
 						updates['/project_test/time'] = false;
@@ -280,7 +285,7 @@
 					
 
 					//判斷正確與否
-					if(timeOnSit%5==0 && timeOnSit>0)    //5個一循還
+					if(timeOnSit%5==0 & timeOnSit>0)    //5個一循還
 					{
 						//alert(localStorage.getItem("average"));
 						var average = localStorage.getItem("average");
@@ -393,20 +398,15 @@
 							}
 						}
 						
-						if(sitCorrect)
+						if(!sitCorrect)
 						{
-							correctSitTime+=5;
-							
+							dayWrongSitTime+=5;
+							if(time!=0 & timeOnSit%time!=0)
+								wrongSitTime+=5;
 						}
-							
-						else
-						{
-							wrongSitTime+=5;
-							
-						}	
 					}
-					localStorage.setItem('correctSitTime',correctSitTime);
 					localStorage.setItem('wrongSitTime',wrongSitTime);
+					localStorage.setItem('dayWrongSitTime',dayWrongSitTime);
 				}
 				else
 				{

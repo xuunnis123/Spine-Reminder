@@ -138,11 +138,14 @@
 		var time = localStorage.getItem("time");
 		
 		var wrongSitTime = localStorage.getItem("wrongSitTime");
-		var correctSitTime = localStorage.getItem("correctSitTime");
+		wrongSitTime = parseInt(wrongSitTime);
+		var dayWrongSitTime = localStorage.getItem('dayWrongSitTime');
+		dayWrongSitTime = parseInt(dayWrongSitTime);
 		var sitArray= []; //存7天內就坐時間
 		var daySitTime=localStorage.getItem('daySitTime');
 		var checkArray = []; //存現在坐姿
 		var updates = {};
+		
 		
 		var timer=null;
 		
@@ -192,9 +195,12 @@
 							}
 							localStorage.setItem("sit",sit);
 						}
-						localStorage.setItem("correctSitTime",correctSitTime);
-						localStorage.setItem("wrongSitTime",wrongSitTime);
+						localStorage.setItem('YesterdaySitTime',daySitTime);
+						localStorage.setItem('YesterdayWrongSitTime',dayWrongSitTime);
 						daySitTime=0;
+						dayWrongSitTime=0;
+						localStorage.setItem('daySitTime',daySitTime);
+						localStorage.setItem('dayWrongSitTime',dayWrongSitTime);
 					}
 					
 					daySitTime++;
@@ -218,9 +224,8 @@
 								updates['/project_test/error'] = "2";
 							firebase.database().ref().update(updates);
 							wrongSitTime=0;
-							correctSitTime=0;
-						}
-								
+							localStorage.setItem('wrongSitTime',wrongSitTime);
+						}		
 					}
 
 						updates['/project_test/time'] = false;
@@ -228,7 +233,7 @@
 					
 
 					//判斷正確與否
-					if(timeOnSit%5==0 && timeOnSit>0)    //5個一循還
+					if(timeOnSit%5==0 & timeOnSit>0)    //5個一循還
 					{
 						//alert(localStorage.getItem("average"));
 						var average = localStorage.getItem("average");
@@ -341,20 +346,15 @@
 							}
 						}
 						
-						if(sitCorrect)
+						if(!sitCorrect)
 						{
-							correctSitTime+=5;
-							
+							dayWrongSitTime+=5;
+							if(time!=0 & timeOnSit%time!=0)
+								wrongSitTime+=5;
 						}
-							
-						else
-						{
-							wrongSitTime+=5;
-							
-						}	
 					}
-					localStorage.setItem('correctSitTime',correctSitTime);
 					localStorage.setItem('wrongSitTime',wrongSitTime);
+					localStorage.setItem('dayWrongSitTime',dayWrongSitTime);
 				}
 				else
 				{
@@ -376,7 +376,7 @@
 			dateArray[i]=newdate.getMonth()+1+"月"+newdate.getDate()+"日";
 		}
 		
-		localStorage.setItem("sit","9+6.5");
+		//localStorage.setItem("sit","9+6.5");
 		
 		var sit = localStorage.getItem("sit");
 		var sitArray = [];
@@ -410,29 +410,30 @@
 			},*/]
 		};
 		
-		var wrongSitTime = localStorage.getItem("wrongSitTime");
-		var correctSitTime = localStorage.getItem("correctSitTime");
+		localStorage.setItem("YesterdayWrongSitTime",12233);
+		localStorage.setItem("YesterdaySitTime",38000);//25767 38000
 		
-		//localStorage.setItem("wrongSitTime",18960);
-		//localStorage.setItem("correctSitTime",25000);
+		var YesterdayWrongSitTime = localStorage.getItem("YesterdayWrongSitTime");
+		var YesterdayCorrectSitTime = localStorage.getItem("YesterdaySitTime")-localStorage.getItem("YesterdayWrongSitTime");
 		
-		wrongSitTime/=3600;
-		correctSitTime/=3600;
-		correctSitTime = correctSitTime.toFixed(2);
-		wrongSitTime = wrongSitTime.toFixed(2);
+		
+		YesterdayWrongSitTime/=3600;
+		YesterdayCorrectSitTime/=3600;
+		YesterdayCorrectSitTime = YesterdayCorrectSitTime.toFixed(2);
+		YesterdayWrongSitTime = YesterdayWrongSitTime.toFixed(2);
 
-		var sum = parseFloat(correctSitTime) + parseFloat(wrongSitTime);
+		var sum = parseFloat(YesterdayCorrectSitTime) + parseFloat(YesterdayWrongSitTime);
 		
-		correctSitTime=correctSitTime/sum;
-		wrongSitTime=wrongSitTime/sum;
+		YesterdayCorrectSitTime=YesterdayCorrectSitTime/sum;
+		YesterdayWrongSitTime=YesterdayWrongSitTime/sum;
 		
-		correctSitTime = Math.round(correctSitTime*100);
-		wrongSitTime = Math.round(wrongSitTime*100);
+		YesterdayCorrectSitTime = Math.round(YesterdayCorrectSitTime*100);
+		YesterdayWrongSitTime = Math.round(YesterdayWrongSitTime*100);
 		
 		var pieChartData={
 			labels: ["正確坐姿","錯誤坐姿"], //顯示區間名稱
 			datasets: [{
-                    data:[correctSitTime,wrongSitTime],  //預設資料
+                    data:[YesterdayCorrectSitTime,YesterdayWrongSitTime],  //預設資料
                     backgroundColor: [   //資料顏色
 						"#00DD77",
 						"#FF0000"
