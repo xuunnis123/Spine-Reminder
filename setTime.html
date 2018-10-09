@@ -375,8 +375,13 @@ input:checked + .slider:before {
 					seconds.innerHTML=clocktime;
 					clocktime=clocktime-1;	
 				}
+				else
+				{
+					$(clock).hide();
+					$(set).show();
+					clearInterval(timer2);
+				}
 			},1000);
-
 		}
 		
 		/*
