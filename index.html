@@ -380,18 +380,19 @@
 		var i,num;
 		var data;
 		var dataArray = [];
-		var checkArray = [];
+		var checkArray = []; //存目前坐姿
 		var sitArray= []; //存7天內就坐時間
-		var sit;
-		var wrongSitTime = 0;//錯誤坐姿時間
-		var wrongSitTime = 0;//正確坐姿時間
-		var daySitTime=0;
+		var wrongSitTime = localStorage.getItem('wrongSitTime');//錯誤坐姿時間
+		var correctSitTime = localStorage.getItem('correctSitTime');//正確坐姿時間
+		var daySitTime=localStorage.getItem('daySitTime');
+		
+		wrongSitTime=parseInt(wrongSitTime);
+		correctSitTime=parseInt(correctSitTime);
 		
 	  		
 		function checkSit()
 		{
 			var updates = {};
-			var weight = localStorage.getItem("weight");
 			
 			clearInterval(timer);
 			timer=setInterval(function () 
@@ -430,7 +431,7 @@
 					var date = new Date();
 					if(parseInt(date.getHours())==0 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
 					{
-						sit = localStorage.getItem("sit");
+						var sit = localStorage.getItem("sit");
 						sitArray= sit.split("+");
 						if(sitArray.length==0)
 							localStorage.setItem("sit",sit);
@@ -451,6 +452,8 @@
 							}
 							localStorage.setItem("sit",sit);
 						}
+						localStorage.setItem("correctSitTime",correctSitTime);
+						localStorage.setItem("wrongSitTime",wrongSitTime);
 						daySitTime=0;
 					}
 					
@@ -465,6 +468,7 @@
 					timeOnSit++;
 					localStorage.setItem('timeOnSit',timeOnSit);
 					localStorage.setItem('timeOffSit',timeOffSit);
+					localStorage.setItem('daySitTime',daySitTime);
 					var h=parseInt(timeOnSit/3600);
 					var m=parseInt(timeOnSit/60%60);
 					var s=parseInt(timeOnSit%60);
@@ -479,12 +483,13 @@
 							updates['/project_test/time'] = true;
 							firebase.database().ref().update(updates);
 							var error = wrongSitTime/time;
+							alert(error);
 							if(error <= 0.3)
 								updates['/project_test/error'] = "0";
 							else if(error<=0.7)
 								updates['/project_test/error'] = "1";
 							else
-								updates['/project_test/error'] = "1";
+								updates['/project_test/error'] = "2";
 							firebase.database().ref().update(updates);
 							wrongSitTime=0;
 							correctSitTime=0;
@@ -645,6 +650,9 @@
 						wrongSitTime+=5;
 					}	
 				}
+				
+				localStorage.setItem('correctSitTime',correctSitTime);
+				localStorage.setItem('wrongSitTime',wrongSitTime);
 				
 			},1000);				
 		

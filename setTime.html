@@ -216,13 +216,18 @@ input:checked + .slider:before {
 		var timeOnSit = localStorage.getItem('timeOnSit');
 		var timeOffSit = localStorage.getItem('timeOffSit');
 		var time = localStorage.getItem("time");
-		var IsAlarm = false;
-		var picktime = true;
+		
+		var wrongSitTime = localStorage.getItem("wrongSitTime");
+		wrongSitTime = parseInt(wrongSitTime);
+		var correctSitTime = localStorage.getItem("correctSitTime");
+		correctSitTime = parseInt(correctSitTime);
+		var sitArray= []; //存7天內就坐時間
+		var daySitTime=localStorage.getItem('daySitTime');
+		var checkArray = []; //存現在坐姿
+		var updates = {};
+		
 		var timer=null;
 		
-		
-		
-	
 		var config = {
 			apiKey: "AIzaSyCsevat-cSK1iNpQaT8MtWVLEjApLxp51c",
 			authDomain: "aduinodb.firebaseapp.com",
@@ -249,7 +254,7 @@ input:checked + .slider:before {
 			}
 		}
 	
-	
+		var database =firebase.database().ref('/project_test/');
 		function changeTime()
 		{
 		
@@ -257,34 +262,207 @@ input:checked + .slider:before {
 			// setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
 			timer=setInterval(function () 
 			{
-				
 				if(localStorage.getItem("flagOnSit")=="true")
 				{
+				
+					var date = new Date();
+					if(parseInt(date.getHours())==0 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
+					{
+						var sit = localStorage.getItem("sit");
+						sitArray= sit.split("+");
+						if(sitArray.length==0)
+							localStorage.setItem("sit",sit);
+						else
+						{
+							if(sitArray.length<7)
+								sit = daySitTime + "+" + sit;
+							else
+							{
+								for(i=0;i<6;i++)
+								{
+									if(i==0)
+										sit = sitArray[i];
+									else
+										sit = sitArray[i] +"+" + sit;
+								}
+								sit = daySitTime + "+" + sit; 
+							}
+							localStorage.setItem("sit",sit);
+						}
+						localStorage.setItem("correctSitTime",correctSitTime);
+						localStorage.setItem("wrongSitTime",wrongSitTime);
+						daySitTime=0;
+					}
+					
+					daySitTime++;
 					timeOnSit++;
 					timeOffSit=0;
+					
 					
 					if(time!=0)
 					{
 						if(timeOnSit%time==0)
 						{
 							updates['/project_test/time'] = true;
+							firebase.database().ref().update(updates);					
+							
+							var error = wrongSitTime/time;
+							alert(error);
+							if(error <= 0.3)
+								updates['/project_test/error'] = "0";
+							else if(error<=0.7)
+								updates['/project_test/error'] = "1";
+							else
+								updates['/project_test/error'] = "2";
 							firebase.database().ref().update(updates);
+							wrongSitTime=0;
+							correctSitTime=0;
 						}
+								
 					}
+
+						updates['/project_test/time'] = false;
+						firebase.database().ref().update(updates);
 					
-					updates['/project_test/time'] = false;
-					firebase.database().ref().update(updates);
+
+					//判斷正確與否
+					if(timeOnSit%5==0 && timeOnSit>0)    //5個一循還
+					{
+						//alert(localStorage.getItem("average"));
+						var average = localStorage.getItem("average");
+						var averageArray=[];
+						var sitCorrect = true;
+						
+						averageArray=average.split("+");
+						
+						for(i=0;i<6;i++)
+						{
+							checkArray[i]=0;//歸零
+						}
+						
+						//data1
+						database.on('value', function(snapshot) {
+						  data = snapshot.val().Data1;
+						});
+						data=data.slice(0,-1);  //刪掉尾巴]括號
+						data=data.slice(1);  //刪掉開頭[括號
+						dataArray=data.split(',');  //分割成六個感測器值
+						for(i=0;i<6;i++)
+						{
+							dataArray[i]=dataArray[i].slice(0,-1);
+							dataArray[i]=dataArray[i].slice(1);
+							checkArray[i]+=parseInt(dataArray[i]);
+						}
+						
+						//data2
+						database.on('value', function(snapshot) {
+						  data = snapshot.val().Data2;
+						});
+						data=data.slice(0,-1);  //刪掉尾巴]括號
+						data=data.slice(1);  //刪掉開頭[括號
+						dataArray=data.split(',');  //分割成六個感測器值
+						for(i=0;i<6;i++)
+						{
+							dataArray[i]=dataArray[i].slice(0,-1);
+							dataArray[i]=dataArray[i].slice(1);
+							checkArray[i]+=parseInt(dataArray[i]);
+						}
+						//data3
+						database.on('value', function(snapshot) {
+						  data = snapshot.val().Data3;
+						});
+						data=data.slice(0,-1);  //刪掉尾巴]括號
+						data=data.slice(1);  //刪掉開頭[括號
+						dataArray=data.split(',');  //分割成六個感測器值
+						for(i=0;i<6;i++)
+						{
+							dataArray[i]=dataArray[i].slice(0,-1);
+							dataArray[i]=dataArray[i].slice(1);
+							checkArray[i]+=parseInt(dataArray[i]);
+						}
+						//data4
+						database.on('value', function(snapshot) {
+						  data = snapshot.val().Data4;
+						});
+						data=data.slice(0,-1);  //刪掉尾巴]括號
+						data=data.slice(1);  //刪掉開頭[括號
+						dataArray=data.split(',');  //分割成六個感測器值
+						for(i=0;i<6;i++)
+						{
+							dataArray[i]=dataArray[i].slice(0,-1);
+							dataArray[i]=dataArray[i].slice(1);
+							checkArray[i]+=parseInt(dataArray[i]);
+						}
+						//data5
+						database.on('value', function(snapshot) {
+						  data = snapshot.val().Data5;
+						});
+						data=data.slice(0,-1);  //刪掉尾巴]括號
+						data=data.slice(1);  //刪掉開頭[括號
+						dataArray=data.split(',');  //分割成六個感測器值
+						for(i=0;i<6;i++)
+						{
+							dataArray[i]=dataArray[i].slice(0,-1);
+							dataArray[i]=dataArray[i].slice(1);
+							checkArray[i]+=parseInt(dataArray[i]);
+						}
+						
+						for(i=0;i<6;i++)
+						{
+							checkArray[i]/=5;
+							checkArray[i]=parseInt(checkArray[i]);
+						}
+						
+						for(i=0;i<6;i++)
+						{
+							if(i<4)
+							{
+								var sub=0;
+								sub = checkArray[i]-parseInt(averageArray[i]);
+								if(sub<0)
+									sub=-sub;
+								if(i<2)
+								{
+									if(sub > parseInt(averageArray[i])*0.3)
+										sitCorrect=false;
+								}
+								else
+								{
+									if(sub > parseInt(averageArray[i])*0.4)
+										sitCorrect=false;
+								}
+							}
+							else
+							{
+								if(checkArray[i]<=10)
+									sitCorrect=false;
+							}
+						}
+						
+						if(sitCorrect)
+						{
+							correctSitTime+=5;
+							
+						}
+							
+						else
+						{
+							wrongSitTime+=5;
+							
+						}	
+					}
+					localStorage.setItem('correctSitTime',correctSitTime);
+					localStorage.setItem('wrongSitTime',wrongSitTime);
 				}
 				else
 				{
 					timeOffSit++;
-					timeOnSit=0;
+					timeOnSit=0;	
 				}
+				localStorage.setItem('daySitTime',daySitTime);
 				localStorage.setItem('timeOnSit',timeOnSit);
 				localStorage.setItem('timeOffSit',timeOffSit);
-				
 			},1000);
-			
 		}
 		
 		function setTime()
