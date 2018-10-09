@@ -215,7 +215,6 @@
 							firebase.database().ref().update(updates);					
 							
 							var error = wrongSitTime/time;
-							alert(error);
 							if(error <= 0.3)
 								updates['/project_test/error'] = "0";
 							else if(error<=0.7)
