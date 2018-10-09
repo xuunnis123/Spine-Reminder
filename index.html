@@ -114,12 +114,12 @@
 	<div class="agilecountdown-timerwthree">
 		<div class="countdown-timer-w3laits">
 			<div class="container" id="count">
-				<button type="button" class="btn btn-success" onclick="startTime()">開始</button>
-				<!--<button onclick="startTime()">開始</button>-->
-				<button type="button" class="btn btn-danger" onclick="pauseTime()">暫停</button>
-				<!--<button onclick="pauseTime()">暫停</button>-->
-				<button type="button" class="btn btn-secondary" onclick="endTime()">結束</button>
-				<!--<button onclick="endTime()">結束</button>-->
+				<!--<button type="button" class="btn btn-success" onclick="startTime()">開始</button>
+				<button onclick="startTime()">開始</button>-->
+				<!--<button type="button" class="btn btn-danger" onclick="pauseTime()">暫停</button>
+				<button onclick="pauseTime()">暫停</button>-->
+				<!--<button type="button" class="btn btn-secondary" onclick="endTime()">結束</button>
+				<button onclick="endTime()">結束</button>-->
 				<div class="alert alert-danger" role="alert">
   					<font font-family:"AdobeFanHeitiStd-Bold.otf" size="4">接下來要做的事：</font>
 					<font font-family:"AdobeFanHeitiStd-Bold" size="4" color="#0066FF" id="nextEvent"></font>
@@ -362,9 +362,7 @@
 					nextEvent.innerHTML="目前沒有待辦事項";
 				
 			},1000);
-			
-			
-			
+
 		}
 		
 		
@@ -383,6 +381,11 @@
 		var data;
 		var dataArray = [];
 		var checkArray = [];
+		var sitArray= []; //存7天內就坐時間
+		var sit;
+		var wrongSitTime = 0;//錯誤坐姿時間
+		var wrongSitTime = 0;//正確坐姿時間
+		var daySitTime=0;
 		
 	  		
 		function checkSit()
@@ -422,14 +425,43 @@
 				}	
 				
 				
-				if((num/dataArray.length)>6)	//感測器平均值大於6坐著
+				if((num/dataArray.length)>6)	//坐著   感測器平均值大於6
 				{
+					var date = new Date();
+					if(parseInt(date.getHours())==0 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
+					{
+						sit = localStorage.getItem("sit");
+						sitArray= sit.split("+");
+						if(sitArray.length==0)
+							localStorage.setItem("sit",sit);
+						else
+						{
+							if(sitArray.length<7)
+								sit = daySitTime + "+" + sit;
+							else
+							{
+								for(i=0;i<6;i++)
+								{
+									if(i==0)
+										sit = sitArray[i];
+									else
+										sit = sitArray[i] +"+" + sit;
+								}
+								sit = daySitTime + "+" + sit; 
+							}
+							localStorage.setItem("sit",sit);
+						}
+						daySitTime=0;
+					}
+					
 					localStorage.setItem("flagOnSit","true");
 					timeOffSit=0;
 					hours_offsit.innerHTML=0;
 					minutes_offsit.innerHTML=0;
 					seconds_offsit.innerHTML=0;
 					
+					
+					daySitTime++;
 					timeOnSit++;
 					localStorage.setItem('timeOnSit',timeOnSit);
 					localStorage.setItem('timeOffSit',timeOffSit);
@@ -446,6 +478,16 @@
 						{
 							updates['/project_test/time'] = true;
 							firebase.database().ref().update(updates);
+							var error = wrongSitTime/time;
+							if(error <= 0.3)
+								updates['/project_test/error'] = "0";
+							else if(error<=0.7)
+								updates['/project_test/error'] = "1";
+							else
+								updates['/project_test/error'] = "1";
+							firebase.database().ref().update(updates);
+							wrongSitTime=0;
+							correctSitTime=0;
 						}
 					}
 					
@@ -454,6 +496,9 @@
 				}
 				else//站著
 				{
+					wrongSitTime=0;
+					correctSitTime=0;
+
 					localStorage.setItem("flagOnSit","false");
 					timeOnSit = 0;
 					hours_onsit.innerHTML=0;
@@ -469,7 +514,6 @@
 					hours_offsit.innerHTML=h;
 					minutes_offsit.innerHTML=m;
 					seconds_offsit.innerHTML=s;
-						
 				}
 				
 				
@@ -567,18 +611,18 @@
 						if(i<4)
 						{
 							var sub=0;
-							sub = checkArray[i]-averageArray[i];
+							sub = checkArray[i]-parseInt(averageArray[i]);
 							console.log(sub);
 							if(sub<0)
 								sub=-sub;
 							if(i<2)
 							{
-								if(sub > averageArray[i]*0.3);
+								if(sub > parseInt(averageArray[i])*0.3)
 									sitCorrect=false;
 							}
 							else
 							{
-								if(sub > averageArray[i]*0.4);
+								if(sub > parseInt(averageArray[i])*0.4)
 									sitCorrect=false;
 							}
 						}
@@ -590,9 +634,16 @@
 					}
 					
 					if(sitCorrect)
+					{
 						console.log("目前坐姿正確");
+						correctSitTime+=5;
+					}
+						
 					else
+					{
 						console.log("目前坐姿錯誤");
+						wrongSitTime+=5;
+					}	
 				}
 				
 			},1000);				

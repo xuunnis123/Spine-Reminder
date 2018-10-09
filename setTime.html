@@ -177,7 +177,7 @@ input:checked + .slider:before {
 		</div>
 		
 		<section class="special-w3layouts" >
-			<div class="container" id="set">
+			<div class="container" id="set123">
 				<h2 class="text-center wthree w3-agileits"><font face="標楷體">久坐時間設定</font></h2>
 				
 				
@@ -240,11 +240,11 @@ input:checked + .slider:before {
 			var check = document.getElementById("ifchecked");
 			
 			if(check.checked){
-				$(set).hide();
+				$(set123).hide();
 				localStorage.setItem("time",0);
 			}
 			else {
-				$(set).show();
+				$(set123).show();
 				localStorage.setItem("time",600);
 			}
 		}
@@ -292,8 +292,8 @@ input:checked + .slider:before {
 			var time = document.getElementById("time");
 			if(time.value!="" && time.value!=null)
 			{
-				localStorage.setItem("time",time.value);
-				alert("久坐時間："+time+"分鐘設定完畢！");
+				localStorage.setItem("time",(time.value*60));
+				alert("久坐時間："+time.value+"分鐘設定完畢！");
 			}
 			time.value="";	
 		}
@@ -383,26 +383,6 @@ input:checked + .slider:before {
 				}
 			},1000);
 		}
-		
-		/*
-		function setWeight()
-		{
-			var weight = document.getElementById("weight");
-			if(weight.value!="" && weight.value!=null)
-			{
-				if(weight.value<=150 && weight.value>=0)
-				{
-					localStorage.setItem("weight",weight.value);
-					alert("體重："+weight.value+"分斤設定完畢！");
-				}
-				else
-				{
-					alert("設定失敗！！！\n"+"合法體重為0至150公斤");
-				}
-			}
-			weight.value="";
-		}*/
-
 		
 	</script>
 	
