@@ -114,12 +114,6 @@
 	<div class="agilecountdown-timerwthree">
 		<div class="countdown-timer-w3laits">
 			<div class="container" id="count">
-				<!--<button type="button" class="btn btn-success" onclick="startTime()">開始</button>
-				<button onclick="startTime()">開始</button>-->
-				<!--<button type="button" class="btn btn-danger" onclick="pauseTime()">暫停</button>
-				<button onclick="pauseTime()">暫停</button>-->
-				<!--<button type="button" class="btn btn-secondary" onclick="endTime()">結束</button>
-				<button onclick="endTime()">結束</button>-->
 				<div class="alert alert-danger" role="alert">
   					<font font-family:"AdobeFanHeitiStd-Bold.otf" size="4">接下來要做的事：</font>
 					<font font-family:"AdobeFanHeitiStd-Bold" size="4" color="#0066FF" id="nextEvent"></font>
@@ -228,91 +222,7 @@
 		var hours_offsit = document.getElementById("hours_offsit");
 		var minutes_offsit = document.getElementById("minutes_offsit");
 		var seconds_offsit = document.getElementById("seconds_offsit");
-		
-		
-		function startTime()
-		{
-			document.write('<img src="images/a1.png">');
-		}
-	
-	/*
-		function startTime()
-		{	
-			flagOnSit=localStorage.getItem('flagOnSit');
-			time=localStorage.getItem('time');
-			
-			if(flagOnSit=="true")
-			{
-				hours_offsit.innerHTML=0;
-				minutes_offsit.innerHTML=0;
-				seconds_offsit.innerHTML=0;
 
-				clearInterval(timer);
-				// setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
-				timer=setInterval(function () 
-				{
-					time++;
-					localStorage.setItem('time',time);
-					var h=parseInt(time/3600);
-					var m=parseInt(time/60%60);
-					var s=parseInt(time%60);
-					hours_onsit.innerHTML=h;
-					minutes_onsit.innerHTML=m;
-					seconds_onsit.innerHTML=s;
-				},1000);
-			}
-			else
-			{
-				hours_onsit.innerHTML=0;
-				minutes_onsit.innerHTML=0;
-				seconds_onsit.innerHTML=0;
-
-				clearInterval(timer);
-				// setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
-				timer=setInterval(function () 
-				{
-					time++;
-					localStorage.setItem('time',time);
-					var h=parseInt(time/3600);
-					var m=parseInt(time/60%60);
-					var s=parseInt(time%60);
-					hours_offsit.innerHTML=h;
-					minutes_offsit.innerHTML=m;
-					seconds_offsit.innerHTML=s;
-				},1000);
-			}
-		}
-		
-		function pauseTime()
-		{
-			if(flagOnSit=="true")
-				clearInterval(timer);
-		}
-		
-		function endTime()
-		{
-			clearInterval(timer);
-			flagOnSit = localStorage.getItem('flagOnSit');
-			
-			if(flagOnSit == "true")
-			{	
-				flagOnSit = false;
-			}
-			else
-			{
-				flagOnSit=true;
-			}
-				
-			localStorage.setItem('flagOnSit',flagOnSit);
-			
-			
-			time=0;
-			localStorage.setItem('time',time);
-			
-			startTime();
-		}
-		
-	*/
 		
 		function getNextEvent()
 		{

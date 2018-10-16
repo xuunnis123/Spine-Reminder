@@ -474,16 +474,6 @@ input:checked + .slider:before {
 		}
 		
 		
-		// Initialize Firebase
-		var config = {
-			apiKey: "AIzaSyCsevat-cSK1iNpQaT8MtWVLEjApLxp51c",
-			authDomain: "aduinodb.firebaseapp.com",
-			databaseURL: "https://aduinodb.firebaseio.com",
-			projectId: "aduinodb",
-			storageBucket: "aduinodb.appspot.com",
-			messagingSenderId: "991564246365"
-		};
-		firebase.initializeApp(config);
 		
 		function initial_Set()
 		{
@@ -555,6 +545,7 @@ input:checked + .slider:before {
 					$(clock).hide();
 					$(set).show();
 					clearInterval(timer2);
+					alert("請坐在椅子上");
 				}
 			},1000);
 		}
