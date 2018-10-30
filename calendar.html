@@ -69,7 +69,7 @@
 				<div id="navbar" class="navbar-collapse navbar-right collapse">
 					<ul class="nav navbar-nav navbar-right cross-effect" id="cross-effect">
 						<li><a id="index" href="index.html">首頁</a></li>
-						<li><a id="setTime" href="setTime.html">久坐提醒設定</a></li>
+						<li><a id="set" href="set.html">設定</a></li>
 						<li><a id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
 						<li>行事曆</li>
 						<li><a id="analysis" href="analysis.html">分析</a></li>
@@ -183,8 +183,9 @@
 				{
 				
 					var date = new Date();
-					if(parseInt(date.getHours())==0 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
+					if(parseInt(date.getHours())==20 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
 					{
+						alert("時間到了");
 						var sit = localStorage.getItem("sit");
 						sitArray= sit.split("+");
 						if(sitArray.length==0)
@@ -192,7 +193,7 @@
 						else
 						{
 							if(sitArray.length<7)
-								sit = daySitTime + "+" + sit;
+								sit = (daySitTime/60).toFixed(1) + "+" + sit;
 							else
 							{
 								for(i=0;i<6;i++)
@@ -200,9 +201,9 @@
 									if(i==0)
 										sit = sitArray[i];
 									else
-										sit = sitArray[i] +"+" + sit;
+										sit = sit + "+" + sitArray[i];
 								}
-								sit = daySitTime + "+" + sit; 
+								sit = (daySitTime/60).toFixed(1) + "+" + sit; 
 							}
 							localStorage.setItem("sit",sit);
 						}

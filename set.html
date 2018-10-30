@@ -29,6 +29,8 @@
 <!-- //Font-Awesome-File-Links -->
 
 <!-- Supportive-JavaScript --> <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+							   <!--<script type="text/javascript" src="js/set.js"></script>-->
+							  
 <style>
 .switch {
   position: relative;
@@ -122,7 +124,7 @@ input:checked + .slider:before {
 				<div id="navbar" class="navbar-collapse navbar-right collapse">
 					<ul class="nav navbar-nav navbar-right cross-effect" id="cross-effect">
 						<li><a id="index" href="index.html">首頁</a></li>
-						<li>久坐提醒設定</li>
+						<li>設定</li>
 						<li><a id="sitError" href="sitError.html">錯誤坐姿一覽</a></li>
 						<li><a id="calendar" href="calendar.html">行事曆</a></li>
 						<li><a id="analysis" href="analysis.html">分析</a></li>
@@ -258,7 +260,7 @@ input:checked + .slider:before {
 		var database =firebase.database().ref('/project_test/');
 		function changeTime()
 		{
-		
+			//firebase.initializeApp(config);
 			clearInterval(timer);
 			// setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
 			timer=setInterval(function () 
@@ -267,8 +269,9 @@ input:checked + .slider:before {
 				{
 				
 					var date = new Date();
-					if(parseInt(date.getHours())==0 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
+					if(parseInt(date.getHours())==20 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
 					{
+						alert("時間到了");
 						var sit = localStorage.getItem("sit");
 						sitArray= sit.split("+");
 						if(sitArray.length==0)
@@ -276,7 +279,7 @@ input:checked + .slider:before {
 						else
 						{
 							if(sitArray.length<7)
-								sit = daySitTime + "+" + sit;
+								sit = (daySitTime/60).toFixed(1) + "+" + sit;
 							else
 							{
 								for(i=0;i<6;i++)
@@ -284,9 +287,9 @@ input:checked + .slider:before {
 									if(i==0)
 										sit = sitArray[i];
 									else
-										sit = sitArray[i] +"+" + sit;
+										sit = sit + "+" + sitArray[i];
 								}
-								sit = daySitTime + "+" + sit; 
+								sit = (daySitTime/60).toFixed(1) + "+" + sit; 
 							}
 							localStorage.setItem("sit",sit);
 						}
@@ -330,7 +333,8 @@ input:checked + .slider:before {
 					//判斷正確與否
 					if(timeOnSit%5==0 & timeOnSit>0)    //5個一循還
 					{
-						//alert(localStorage.getItem("average"));
+						
+						
 						var average = localStorage.getItem("average");
 						var averageArray=[];
 						var sitCorrect = true;
@@ -549,7 +553,6 @@ input:checked + .slider:before {
 				}
 			},1000);
 		}
-		
 	</script>
 	
 	<!--
