@@ -397,7 +397,7 @@
 		var sit = localStorage.getItem("sit");
 		if(sit == null)
 		{
-			localStorage.setItem("sit","0+0+0+0+0+0+0");
+			localStorage.setItem("sit","0");
 			sit = localStorage.getItem("sit");
 		}	
 		var sitArray = [];
@@ -409,7 +409,7 @@
 				sitArray[i] = 0;
 		}
 		
-		var maxSitTime = 0;
+		var maxSitTime = 1;
 		for(i=0;i<7;i++)
 		{
 			if(parseFloat(sitArray[i]) > maxSitTime)
@@ -438,14 +438,8 @@
 		
 		var YesterdayWrongSitTime = localStorage.getItem("YesterdayWrongSitTime");
 		var YesterdayCorrectSitTime = localStorage.getItem("YesterdaySitTime")-localStorage.getItem("YesterdayWrongSitTime");
-		
-		
-		YesterdayWrongSitTime/=3600;
-		YesterdayCorrectSitTime/=3600;
-		YesterdayCorrectSitTime = YesterdayCorrectSitTime.toFixed(2);
-		YesterdayWrongSitTime = YesterdayWrongSitTime.toFixed(2);
 
-		var sum = parseFloat(YesterdayCorrectSitTime) + parseFloat(YesterdayWrongSitTime);
+		var sum = parseInt(YesterdayCorrectSitTime) + parseInt(YesterdayWrongSitTime);
 		
 		YesterdayCorrectSitTime=YesterdayCorrectSitTime/sum;
 		YesterdayWrongSitTime=YesterdayWrongSitTime/sum;
