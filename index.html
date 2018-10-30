@@ -213,7 +213,8 @@
 		
 		var timer=null;
 		var flagOnSit;
-		var time;
+		var time = localStorage.getItem("time");
+		var alarm = localStorage.getItem("alarm");
 		
 		var hours_onsit = document.getElementById("hours_onsit");
 		var minutes_onsit = document.getElementById("minutes_onsit");
@@ -222,6 +223,17 @@
 		var hours_offsit = document.getElementById("hours_offsit");
 		var minutes_offsit = document.getElementById("minutes_offsit");
 		var seconds_offsit = document.getElementById("seconds_offsit");
+		
+		if(time == null)
+		{
+			time = 600;
+			localStorage.setItem("time",time);
+		}
+		if(alarm == null)
+		{
+			alarm = true;
+			localStorage.setItem("alarm",alarm);
+		}
 
 		
 		function getNextEvent()
@@ -345,15 +357,17 @@
 				if((num/dataArray.length)>6)	//坐著   感測器平均值大於6
 				{
 					var date = new Date();
-					if(parseInt(date.getHours())==20 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
+					if(parseInt(date.getHours())==21 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
 					{
 						alert("時間到了");
+						//alert(localStorage.getItem("sit"));
 						var sit = localStorage.getItem("sit");
-						sitArray= sit.split("+");
-						if(sitArray.length==0)
-							localStorage.setItem("sit",sit);
-						else
+						if(sit == null)
 						{
+							localStorage.setItem("sit",(daySitTime/60).toFixed(1));
+						}
+						else
+						{	sitArray= sit.split("+");
 							if(sitArray.length<7)
 								sit = (daySitTime/60).toFixed(1) + "+" + sit;
 							else
@@ -396,7 +410,7 @@
 					minutes_onsit.innerHTML=m;
 					seconds_onsit.innerHTML=s;
 					
-					if(time!=0)
+					if(alarm!=0)
 					{
 						if(timeOnSit%time==0)
 						{

@@ -136,6 +136,7 @@
 		var timeOnSit = localStorage.getItem('timeOnSit');
 		var timeOffSit = localStorage.getItem('timeOffSit');
 		var time = localStorage.getItem("time");
+		var alarm = localStorage.getItem("alarm");
 		
 		var wrongSitTime = localStorage.getItem("wrongSitTime");
 		wrongSitTime = parseInt(wrongSitTime);
@@ -148,6 +149,18 @@
 		
 		
 		var timer=null;
+		
+		if(time == null)
+		{
+			time = 600;
+			localStorage.setItem("time",time);
+		}
+		if(alarm == null)
+		{
+			alarm = true;
+			localStorage.setItem("alarm",alarm);
+		}
+	
 		
 	
 		var config = {
@@ -163,7 +176,7 @@
 		var database =firebase.database().ref('/project_test/');
 		function changeTime()
 		{
-		
+			//firebase.initializeApp(config);
 			clearInterval(timer);
 			// setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
 			timer=setInterval(function () 
@@ -172,15 +185,17 @@
 				{
 				
 					var date = new Date();
-					if(parseInt(date.getHours())==20 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
+					if(parseInt(date.getHours())==21 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
 					{
 						alert("時間到了");
+						//alert(localStorage.getItem("sit"));
 						var sit = localStorage.getItem("sit");
-						sitArray= sit.split("+");
-						if(sitArray.length==0)
-							localStorage.setItem("sit",sit);
-						else
+						if(sit == null)
 						{
+							localStorage.setItem("sit",(daySitTime/60).toFixed(1));
+						}
+						else
+						{	sitArray= sit.split("+");
 							if(sitArray.length<7)
 								sit = (daySitTime/60).toFixed(1) + "+" + sit;
 							else
@@ -209,7 +224,7 @@
 					timeOffSit=0;
 					
 					
-					if(time!=0)
+					if(alarm)
 					{
 						if(timeOnSit%time==0)
 						{
@@ -236,7 +251,8 @@
 					//判斷正確與否
 					if(timeOnSit%5==0 & timeOnSit>0)    //5個一循還
 					{
-						//alert(localStorage.getItem("average"));
+						
+						
 						var average = localStorage.getItem("average");
 						var averageArray=[];
 						var sitCorrect = true;
@@ -350,7 +366,7 @@
 						if(!sitCorrect)
 						{
 							dayWrongSitTime+=5;
-							if(time!=0 & timeOnSit%time!=0)
+							if(alarm & timeOnSit%time!=0)
 								wrongSitTime+=5;
 						}
 					}
@@ -364,7 +380,7 @@
 				}
 				localStorage.setItem('daySitTime',daySitTime);
 				localStorage.setItem('timeOnSit',timeOnSit);
-				localStorage.setItem('timeOffSit',timeOffSit);			
+				localStorage.setItem('timeOffSit',timeOffSit);
 			},1000);
 		}
 		
@@ -377,9 +393,13 @@
 			dateArray[i]=newdate.getMonth()+1+"月"+newdate.getDate()+"日";
 		}
 		
-		//localStorage.setItem("sit","9+6.5");
-		
+
 		var sit = localStorage.getItem("sit");
+		if(sit == null)
+		{
+			localStorage.setItem("sit","0+0+0+0+0+0+0");
+			sit = localStorage.getItem("sit");
+		}	
 		var sitArray = [];
 		sitArray = sit.split("+");
 		var i ;
@@ -410,8 +430,11 @@
 			}]
 		};
 		
-		//localStorage.setItem("YesterdayWrongSitTime",12233);
-		//localStorage.setItem("YesterdaySitTime",38000);//25767 38000
+		if(localStorage.getItem("YesterdayWrongSitTime") == null & localStorage.getItem("YesterdaySitTime")==null)
+		{
+			localStorage.setItem("YesterdayWrongSitTime",25);
+			localStorage.setItem("YesterdaySitTime",50);
+		}
 		
 		var YesterdayWrongSitTime = localStorage.getItem("YesterdayWrongSitTime");
 		var YesterdayCorrectSitTime = localStorage.getItem("YesterdaySitTime")-localStorage.getItem("YesterdayWrongSitTime");

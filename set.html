@@ -218,6 +218,7 @@ input:checked + .slider:before {
 		var timeOnSit = localStorage.getItem('timeOnSit');
 		var timeOffSit = localStorage.getItem('timeOffSit');
 		var time = localStorage.getItem("time");
+		var alarm = localStorage.getItem("alarm");
 		
 		var wrongSitTime = localStorage.getItem("wrongSitTime");
 		wrongSitTime = parseInt(wrongSitTime);
@@ -230,6 +231,17 @@ input:checked + .slider:before {
 		
 		
 		var timer=null;
+		
+		if(time == null)
+		{
+			time = 600;
+			localStorage.setItem("time",time);
+		}
+		if(alarm == null)
+		{
+			alarm = true;
+			localStorage.setItem("alarm",alarm);
+		}
 		
 		var config = {
 			apiKey: "AIzaSyCsevat-cSK1iNpQaT8MtWVLEjApLxp51c",
@@ -249,11 +261,11 @@ input:checked + .slider:before {
 			
 			if(check.checked){
 				$(set123).hide();
-				localStorage.setItem("time",0);
+				localStorage.setItem("alarm",false);
 			}
 			else {
 				$(set123).show();
-				localStorage.setItem("time",600);
+				localStorage.setItem("alarm",true);
 			}
 		}
 	
@@ -269,15 +281,17 @@ input:checked + .slider:before {
 				{
 				
 					var date = new Date();
-					if(parseInt(date.getHours())==20 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
+					if(parseInt(date.getHours())==21 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
 					{
 						alert("時間到了");
+						//alert(localStorage.getItem("sit"));
 						var sit = localStorage.getItem("sit");
-						sitArray= sit.split("+");
-						if(sitArray.length==0)
-							localStorage.setItem("sit",sit);
-						else
+						if(sit == null)
 						{
+							localStorage.setItem("sit",(daySitTime/60).toFixed(1));
+						}
+						else
+						{	sitArray= sit.split("+");
 							if(sitArray.length<7)
 								sit = (daySitTime/60).toFixed(1) + "+" + sit;
 							else
@@ -306,7 +320,7 @@ input:checked + .slider:before {
 					timeOffSit=0;
 					
 					
-					if(time!=0)
+					if(alarm)
 					{
 						if(timeOnSit%time==0)
 						{
@@ -448,7 +462,7 @@ input:checked + .slider:before {
 						if(!sitCorrect)
 						{
 							dayWrongSitTime+=5;
-							if(time!=0 & timeOnSit%time!=0)
+							if(alarm & timeOnSit%time!=0)
 								wrongSitTime+=5;
 						}
 					}
