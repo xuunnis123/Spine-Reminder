@@ -357,9 +357,9 @@
 				if((num/dataArray.length)>6)	//坐著   感測器平均值大於6
 				{
 					var date = new Date();
-					if(parseInt(date.getHours())==21 & parseInt(date.getMinutes())==12 & parseInt(date.getSeconds())==0)
+					if(parseInt(date.getHours())==21 & parseInt(date.getMinutes())==0 & parseInt(date.getSeconds())==0)
 					{
-						alert("時間到了");
+						//alert("時間到了");
 						//alert(localStorage.getItem("sit"));
 						var sit = localStorage.getItem("sit");
 						if(sit == null)
