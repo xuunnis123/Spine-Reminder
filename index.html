@@ -410,7 +410,7 @@
 					minutes_onsit.innerHTML=m;
 					seconds_onsit.innerHTML=s;
 					
-					if(alarm)
+					if(alarm=="true")
 					{
 						if(timeOnSit%time==0)
 						{
@@ -421,7 +421,7 @@
 								updates['/project_test/error'] = "0";
 							else if(error<=0.7)
 								updates['/project_test/error'] = "1";
-							else
+							else 
 								updates['/project_test/error'] = "2";
 							firebase.database().ref().update(updates);
 							wrongSitTime=0;

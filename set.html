@@ -304,10 +304,10 @@ input:checked + .slider:before {
 					timeOffSit=0;
 					
 					
-					if(alarm)
+					if(alarm=="true")
 					{
 						if(timeOnSit%time==0)
-						{
+						{	
 							updates['/project_test/time'] = true;
 							firebase.database().ref().update(updates);					
 							
