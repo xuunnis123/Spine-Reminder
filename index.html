@@ -463,7 +463,7 @@
 					var sitCorrect = true;
 					
 					averageArray=average.split("+");
-					
+					/*
 					for(i=0;i<6;i++)
 					{
 						checkArray[i]=0;//歸零
@@ -534,12 +534,13 @@
 						dataArray[i]=dataArray[i].slice(0,-1);
 						dataArray[i]=dataArray[i].slice(1);
 						checkArray[i]+=parseInt(dataArray[i]);
-					}
+					}*/
 					
 					for(i=0;i<6;i++)
 					{
-						checkArray[i]/=5;
+						checkArray[i]/=4;
 						checkArray[i]=parseInt(checkArray[i]);
+						//console.log(averageArray[i]+"+"+checkArray[i]);
 					}
 					
 					for(i=0;i<6;i++)
@@ -579,8 +580,31 @@
 						console.log("目前坐姿錯誤");
 						wrongSitTime+=5;
 						dayWrongSitTime+=5;
-					}	
+					}
+
+					for(i=0;i<6;i++)
+					{
+						checkArray[i]=0;//歸零
+					}
 				}
+				
+				else
+				{
+					//DATA
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().DATA;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+				}
+				
 				
 				localStorage.setItem('wrongSitTime',wrongSitTime);
 				localStorage.setItem('dayWrongSitTime',dayWrongSitTime);

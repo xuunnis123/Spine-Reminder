@@ -249,127 +249,156 @@
 					
 
 					//判斷正確與否
-					if(timeOnSit%5==0 & timeOnSit>0)    //5個一循還
+				if(timeOnSit%5==0 && timeOnSit>0)    //5個一循還
+				{
+					//alert(localStorage.getItem("average"));
+					
+					var average = localStorage.getItem("average");
+					var averageArray=[];
+					var sitCorrect = true;
+					
+					averageArray=average.split("+");
+					/*
+					for(i=0;i<6;i++)
 					{
-						
-						
-						var average = localStorage.getItem("average");
-						var averageArray=[];
-						var sitCorrect = true;
-						
-						averageArray=average.split("+");
-						
-						for(i=0;i<6;i++)
+						checkArray[i]=0;//歸零
+					}
+					
+					//data1
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data1;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					
+					//data2
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data2;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					//data3
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data3;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					//data4
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data4;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+					//data5
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().Data5;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}*/
+					
+					for(i=0;i<6;i++)
+					{
+						checkArray[i]/=4;
+						checkArray[i]=parseInt(checkArray[i]);
+						//console.log(averageArray[i]+"+"+checkArray[i]);
+					}
+					
+					for(i=0;i<6;i++)
+					{
+						if(i<4)
 						{
-							checkArray[i]=0;//歸零
-						}
-						
-						//data1
-						database.on('value', function(snapshot) {
-						  data = snapshot.val().Data1;
-						});
-						data=data.slice(0,-1);  //刪掉尾巴]括號
-						data=data.slice(1);  //刪掉開頭[括號
-						dataArray=data.split(',');  //分割成六個感測器值
-						for(i=0;i<6;i++)
-						{
-							dataArray[i]=dataArray[i].slice(0,-1);
-							dataArray[i]=dataArray[i].slice(1);
-							checkArray[i]+=parseInt(dataArray[i]);
-						}
-						
-						//data2
-						database.on('value', function(snapshot) {
-						  data = snapshot.val().Data2;
-						});
-						data=data.slice(0,-1);  //刪掉尾巴]括號
-						data=data.slice(1);  //刪掉開頭[括號
-						dataArray=data.split(',');  //分割成六個感測器值
-						for(i=0;i<6;i++)
-						{
-							dataArray[i]=dataArray[i].slice(0,-1);
-							dataArray[i]=dataArray[i].slice(1);
-							checkArray[i]+=parseInt(dataArray[i]);
-						}
-						//data3
-						database.on('value', function(snapshot) {
-						  data = snapshot.val().Data3;
-						});
-						data=data.slice(0,-1);  //刪掉尾巴]括號
-						data=data.slice(1);  //刪掉開頭[括號
-						dataArray=data.split(',');  //分割成六個感測器值
-						for(i=0;i<6;i++)
-						{
-							dataArray[i]=dataArray[i].slice(0,-1);
-							dataArray[i]=dataArray[i].slice(1);
-							checkArray[i]+=parseInt(dataArray[i]);
-						}
-						//data4
-						database.on('value', function(snapshot) {
-						  data = snapshot.val().Data4;
-						});
-						data=data.slice(0,-1);  //刪掉尾巴]括號
-						data=data.slice(1);  //刪掉開頭[括號
-						dataArray=data.split(',');  //分割成六個感測器值
-						for(i=0;i<6;i++)
-						{
-							dataArray[i]=dataArray[i].slice(0,-1);
-							dataArray[i]=dataArray[i].slice(1);
-							checkArray[i]+=parseInt(dataArray[i]);
-						}
-						//data5
-						database.on('value', function(snapshot) {
-						  data = snapshot.val().Data5;
-						});
-						data=data.slice(0,-1);  //刪掉尾巴]括號
-						data=data.slice(1);  //刪掉開頭[括號
-						dataArray=data.split(',');  //分割成六個感測器值
-						for(i=0;i<6;i++)
-						{
-							dataArray[i]=dataArray[i].slice(0,-1);
-							dataArray[i]=dataArray[i].slice(1);
-							checkArray[i]+=parseInt(dataArray[i]);
-						}
-						
-						for(i=0;i<6;i++)
-						{
-							checkArray[i]/=5;
-							checkArray[i]=parseInt(checkArray[i]);
-						}
-						
-						for(i=0;i<6;i++)
-						{
-							if(i<4)
+							var sub=0;
+							sub = checkArray[i]-parseInt(averageArray[i]);
+							console.log(sub);
+							if(sub<0)
+								sub=-sub;
+							if(i<2)
 							{
-								var sub=0;
-								sub = checkArray[i]-parseInt(averageArray[i]);
-								if(sub<0)
-									sub=-sub;
-								if(i<2)
-								{
-									if(sub > parseInt(averageArray[i])*0.3)
-										sitCorrect=false;
-								}
-								else
-								{
-									if(sub > parseInt(averageArray[i])*0.4)
-										sitCorrect=false;
-								}
+								if(sub > parseInt(averageArray[i])*0.3)
+									sitCorrect=false;
 							}
 							else
 							{
-								if(checkArray[i]<=10)
+								if(sub > parseInt(averageArray[i])*0.4)
 									sitCorrect=false;
 							}
 						}
-						
-						if(!sitCorrect)
+						else
 						{
-							dayWrongSitTime+=5;
-							if(alarm & timeOnSit%time!=0)
-								wrongSitTime+=5;
+							if(checkArray[i]<=10)
+								sitCorrect=false;
 						}
 					}
+					
+					if(sitCorrect)
+					{
+						console.log("目前坐姿正確");
+					}
+						
+					else
+					{
+						console.log("目前坐姿錯誤");
+						wrongSitTime+=5;
+						dayWrongSitTime+=5;
+					}
+
+					for(i=0;i<6;i++)
+					{
+						checkArray[i]=0;//歸零
+					}
+				}
+				
+				else
+				{
+					//DATA
+					database.on('value', function(snapshot) {
+					  data = snapshot.val().DATA;
+					});
+					data=data.slice(0,-1);  //刪掉尾巴]括號
+					data=data.slice(1);  //刪掉開頭[括號
+					dataArray=data.split(',');  //分割成六個感測器值
+					for(i=0;i<6;i++)
+					{
+						dataArray[i]=dataArray[i].slice(0,-1);
+						dataArray[i]=dataArray[i].slice(1);
+						checkArray[i]+=parseInt(dataArray[i]);
+					}
+				}
 					localStorage.setItem('wrongSitTime',wrongSitTime);
 					localStorage.setItem('dayWrongSitTime',dayWrongSitTime);
 				}
