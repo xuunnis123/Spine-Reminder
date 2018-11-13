@@ -97,7 +97,7 @@ input:checked + .slider:before {
 
 
 <!-- Body -->
-<body onload="changeTime()">
+<body onload="changeTime();initial_view()">
 
 	<!-- Header -->
 	<div class="header-aits" id="home">
@@ -252,22 +252,6 @@ input:checked + .slider:before {
 			messagingSenderId: "991564246365"
 		};
 		firebase.initializeApp(config);
-		
-		
-		function alarmtime()
-		{
-			var set = document.getElementById("set");
-			var check = document.getElementById("ifchecked");
-			
-			if(check.checked){
-				$(set123).hide();
-				localStorage.setItem("alarm",false);
-			}
-			else {
-				$(set123).show();
-				localStorage.setItem("alarm",true);
-			}
-		}
 	
 		var database =firebase.database().ref('/project_test/');
 		function changeTime()
@@ -509,6 +493,23 @@ input:checked + .slider:before {
 			},1000);
 		}
 		
+		
+		
+		function alarmtime()
+		{
+			var set = document.getElementById("set");
+			var check = document.getElementById("ifchecked");
+			
+			if(check.checked){
+				$(set123).hide();
+				localStorage.setItem("alarm",false);
+			}
+			else {
+				$(set123).show();
+				localStorage.setItem("alarm",true);
+			}
+		}
+		
 		function setTime()
 		{
 			var time = document.getElementById("time");
@@ -518,6 +519,18 @@ input:checked + .slider:before {
 				alert("久坐時間："+time.value+"分鐘設定完畢！");
 			}
 			time.value="";	
+		}
+		
+		function initial_view()
+		{
+			var set = document.getElementById("set");
+			var check = document.getElementById("ifchecked");
+			var alarm = localStorage.getItem("alarm");
+			if(alarm == "false")
+			{
+				check.checked = false;
+				$(set123).hide();
+			}
 		}
 		
 		
