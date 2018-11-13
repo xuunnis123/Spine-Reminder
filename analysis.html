@@ -334,7 +334,7 @@
 					else
 					{sitArray= sit.split("+");
 						if(sitArray.length<7)
-							sit = (daySitTime/60).toFixed(1) + "+" + sit;
+							sit = (daySitTime/3600).toFixed(1) + "+" + sit;
 						else
 						{
 							for(i=0;i<6;i++)
@@ -399,7 +399,8 @@
 				backgroundColor: "#29b288",  //填滿的背景顏色
 				borderColor: "#009FCC",  //線的顏色
 				borderWidth: 5,
-				data: [sitArray[6], sitArray[5], sitArray[4], sitArray[3], sitArray[2], sitArray[1], sitArray[0]], // 資料
+				//data: [sitArray[6], sitArray[5], sitArray[4], sitArray[3], sitArray[2], sitArray[1], sitArray[0]], // 資料
+				data: [3.6, 5, 2.1, 7, 10, 8.8, 4], // 假資料
 				fill: false, // 是否填滿色彩
 			}]
 		};
